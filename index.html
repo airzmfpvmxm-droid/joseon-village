@@ -371,7 +371,7 @@ function renderContent(){
        const applyNotice=()=>{
          marker.remove();
          sceneProp(scene,marketWall,propArt.notice);
-         const nextButton=btn('다음',next);
+         const nextButton=btn('다음',next,game.querySelector('.viewport-actions')||game);
          nextButton.focus();
        };
        const marker=sceneTarget(scene,'흙벽에 방 붙이기',marketWall,applyNotice,true);
@@ -436,7 +436,7 @@ function arrangeViewport(){
       read.onpointerdown=event=>event.stopPropagation();
     });
   }
-  requestAnimationFrame(sizeScenery);
+  sizeScenery();
 }
 function showDocument(card){
   const modal=document.createElement('dialog');modal.className='document-modal';
