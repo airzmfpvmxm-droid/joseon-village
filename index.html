@@ -95,6 +95,76 @@ h1,h2,h3,.map-sign,.scene-dialogue strong{font-family:'Jua','Noto Sans KR','Malg
 .case-doc p{line-height:1.8;margin:0 0 .6em}
 .case-doc time{color:#694b32;font-weight:400}
 .case-doc .seal{display:inline-block;margin:.1em 0 .35em;border:1px solid #91402d;color:#853524;box-shadow:inset 0 0 0 1px #91402d55}
+
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{font-size:clamp(14px,1.65vw,17px);line-height:1.5}
+main{height:100dvh;height:100vh;max-width:1400px;padding:10px 16px;display:flex;flex-direction:column;gap:8px}
+@supports(height:100dvh){main{height:100dvh}}
+header{flex:none;min-height:38px;gap:8px;flex-wrap:nowrap;font-size:14px}
+header button{padding:6px 12px;min-height:36px}
+.panel{flex:1;min-height:0;margin:0;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.panel::after{display:none}
+.viewport-heading{flex:none;display:flex;flex-direction:column;gap:5px}
+.viewport-heading :is(h1,h2,h3,p){margin:0}
+.viewport-heading h2{font-size:clamp(20px,2.6vw,30px)}
+.viewport-heading h3{font-size:clamp(16px,1.8vw,21px)}
+.viewport-heading p{font-size:.9em}
+.viewport-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.viewport-scenery{flex:1;min-height:0;min-width:0;display:flex;justify-content:center;align-items:center}
+.viewport-scenery>:is(.village-scene,.local-scene,.quest-scene){flex:none;margin:0;min-height:0;padding:0;max-width:100%;max-height:100%;aspect-ratio:auto}
+.viewport-scenery .quest-scene{background-size:cover;display:flex;align-items:flex-end}
+.viewport-content{flex:none;min-height:0;display:flex;flex-direction:column;gap:7px}
+.viewport-actions{flex:none;display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:flex-end}
+.viewport-actions .status{flex-basis:100%;order:-1;margin:0;min-height:0;font-size:.9em}
+.viewport-actions .status:empty{display:none}
+.viewport-actions .rebuilt{margin:0;font-size:.85em;margin-right:auto}
+button{min-height:42px;padding:7px 12px;line-height:1.35}
+.hero{min-height:0;justify-content:center}.hero .viewport-body:empty{display:none}.hero .viewport-actions{justify-content:flex-start}
+.hero .viewport-heading{max-width:700px;gap:16px}.hero h1{font-size:clamp(30px,5vw,60px)}
+.board,.record,.ledger,.history,.case-files{margin:0}
+.board{padding:10px;gap:7px}.board.cols{grid-template-columns:repeat(3,minmax(0,1fr))}
+.board .answer,.board .paper{min-height:42px;margin:0}
+.board:not(.cols){grid-template-columns:repeat(2,minmax(0,1fr))}
+.answer{margin:0;min-height:44px;font-size:clamp(14px,1.5vw,17px)}
+.record{padding:8px 12px;font-size:.9em}
+.case-files{display:block;min-height:0}
+.case-doc{margin:0;padding:14px 18px;font-size:clamp(14px,1.6vw,17px)}
+.case-doc[hidden]{display:none!important}
+.case-doc h4{font-size:1.2em;margin:4px 0}.case-doc p{line-height:1.65}
+.document-pages{display:flex;gap:16px;justify-content:center;align-items:center;flex:none}
+.document-pages button{min-width:44px;min-height:40px}
+.office-docs:empty+.document-pages{display:none}
+.timeline-screen .viewport-body{justify-content:flex-start;gap:8px}
+.timeline-screen .board.cols{flex:1;min-height:0}
+.timeline-screen .case-files{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.timeline-screen .case-doc{padding:8px;font-size:14px}
+.timeline-screen .case-doc :is(p,.seal){display:none}
+.timeline-screen .case-doc h4{font-size:16px}
+.timeline-screen .case-slot{min-height:90px;padding:7px;font-size:14px}
+.read-document{display:block;margin-top:6px;font-size:13px;width:100%}
+.document-modal{width:min(580px,90vw);max-height:85dvh;padding:18px;background:#fff2d5;border:3px solid #785437;border-radius:14px}
+.document-modal::backdrop{background:#14251f99}
+.document-modal .case-doc{font-size:17px}.document-modal>button{margin-top:12px;float:right}
+.scene-dialogue{bottom:18px;width:min(calc(100% - 40px),820px);max-height:45dvh;font-size:16px;padding:12px 16px}
+.scene-dialogue p{margin:4px 0 10px}.scene-dialogue button{min-height:42px}
+.ledger{font-size:14px}.ledger h4{margin:0 0 5px}.ledger p{margin:4px 0}.ledger>section{padding:10px}
+.history{width:min(480px,100%);height:210px}
+.quest-scene .dialogue{margin:12px;padding:12px;font-size:16px}
+@media(min-width:950px) and (max-height:850px){
+ .panel[data-screen=task]:not(.timeline-screen) .viewport-body{flex-direction:row;align-items:stretch}
+ .panel[data-screen=task] .viewport-scenery{flex:1}
+ .panel[data-screen=task] .viewport-content{flex:1;justify-content:center}
+ .panel[data-screen=task] .viewport-content .board:not(.cols){grid-template-columns:1fr}
+ .panel[data-screen=task] .viewport-body>.board{flex:1;align-content:center}
+}
+@media(max-height:650px){
+ main{padding:6px 10px;gap:5px}.panel{padding:10px;gap:6px}
+ .viewport-heading h2{font-size:20px}.viewport-heading h3{font-size:16px}
+ .viewport-heading p{font-size:13px}.case-doc{padding:10px;font-size:14px}
+ .timeline-screen .case-doc{padding:5px}.timeline-screen .case-slot{min-height:70px}
+ .timeline-screen .record{padding:5px 8px;font-size:13px}
+}
+
 </style>
 <main><header><p>5학년 2학기 사회 · 조선 후기</p><div id="hud" class="bar"></div></header><section id="game" class="panel"></section></main>
 <script>
@@ -202,12 +272,12 @@ function btn(label,fn,parent=game,cls='',disabled=false){
   b.addEventListener('click',fn);parent.append(b);return b;
 }
 function put(tag,value,cls='',parent=game){const e=document.createElement(tag);e.textContent=value;e.className=cls;parent.append(e);return e;}
-function go(to){selectedDocument=null;screen=to;feedback='';chosen=[];graded=false;render();window.scrollTo(0,0);game.querySelector('h1,h2')?.focus({preventScroll:true});}
+function go(to){documentPage=0;selectedDocument=null;screen=to;feedback='';chosen=[];graded=false;render();window.scrollTo(0,0);game.querySelector('h1,h2')?.focus({preventScroll:true});}
 function title(t,tag='h2'){put(tag,t).tabIndex=-1;}
 function enter(i){stage=i;step=0;go('explore');}
 function next(){step++;go(step===stages[stage].steps.length?'quiz':'task');}
 function complete(){if(!state.done.includes(stage))state.done.push(stage);save();go(stage===5?'end':'map');}
-function render(){
+function renderContent(){
  game.replaceChildren();hud.replaceChildren();game.className='panel';game.style.backgroundImage='';
  if(state.started){
    const evidence=state.done.filter(i=>i>=1&&i<=3).length;
@@ -319,6 +389,73 @@ function render(){
  }
  const status=put('p',feedback,'status');status.setAttribute('role','status');
 }
+
+let documentPage=0;
+function render(){
+  renderContent();
+  arrangeViewport();
+}
+function arrangeViewport(){
+  game.dataset.screen=screen;
+  const top=put('div','','viewport-heading');
+  const body=put('div','','viewport-body');
+  const actions=put('div','','viewport-actions');
+  const original=[...game.children].filter(e=>![top,body,actions].includes(e));
+  const scenes=original.filter(e=>e.matches('.village-scene,.local-scene,.quest-scene'));
+  original.forEach(e=>{
+    if(e.matches('h1,h2')||e.tagName==='H3'||(e.tagName==='P'&&!e.className))top.append(e);
+    else if(e.tagName==='BUTTON'||e.matches('.status,.rebuilt,.bar'))actions.append(e);
+    else body.append(e);
+  });
+  if(scenes.length){
+    const scenic=put('div','','viewport-scenery',body);
+    scenes.forEach(e=>scenic.append(e));
+    const content=put('div','','viewport-content',body);
+    [...body.children].filter(e=>e!==scenic&&e!==content).forEach(e=>content.append(e));
+    if(!content.children.length)content.remove();
+  }
+  const files=game.querySelector('.case-files');
+  if(files&&!stages[stage]?.steps[step]?.caseOrder){
+    const cards=[...files.children];
+    if(cards.length){
+      documentPage=Math.min(documentPage,cards.length-1);
+      cards.forEach((card,i)=>card.hidden=i!==documentPage);
+      const nav=put('div','','document-pages',files.parentNode);
+      btn('◂',()=>{documentPage=(documentPage+cards.length-1)%cards.length;render();},nav,'light').setAttribute('aria-label','이전 문서');
+      put('span',(documentPage+1)+' / '+cards.length,'',nav);
+      btn('▸',()=>{documentPage=(documentPage+1)%cards.length;render();},nav,'light').setAttribute('aria-label','다음 문서');
+    }
+  }
+  if(screen==='task'&&stages[stage].steps[step].caseOrder){
+    game.classList.add('timeline-screen');
+    game.querySelectorAll('.case-doc').forEach(card=>{
+      const read=btn('문서 읽기',event=>{
+        event.stopPropagation();
+        showDocument(card);
+      },card,'read-document light');
+      read.onpointerdown=event=>event.stopPropagation();
+    });
+  }
+  requestAnimationFrame(sizeScenery);
+}
+function showDocument(card){
+  const modal=document.createElement('dialog');modal.className='document-modal';
+  const copy=card.cloneNode(true);copy.removeAttribute('role');copy.removeAttribute('tabindex');
+  copy.querySelectorAll('button').forEach(e=>e.remove());
+  modal.append(copy);btn('닫기',()=>modal.close(),modal,'light');
+  modal.addEventListener('close',()=>modal.remove());document.body.append(modal);modal.showModal();
+}
+function sizeScenery(){
+  game.querySelectorAll('.viewport-scenery').forEach(zone=>{
+    const scene=zone.firstElementChild;
+    if(!scene)return;
+    const ratio=scene.classList.contains('village-scene')?1672/941:2;
+    const width=Math.min(zone.clientWidth,zone.clientHeight*ratio);
+    scene.style.width=width+'px';scene.style.height=width/ratio+'px';
+  });
+}
+window.addEventListener('resize',sizeScenery);
+
 let selectedDocument=null;
 function drawCaseDocument(file,parent){
   const card=put('article','','case-doc',parent);
