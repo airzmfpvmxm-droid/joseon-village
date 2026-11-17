@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>조선 후기 마을 재건기</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;600;700;800&display=swap">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#172d26;color:#263528;font:17px/1.65 'Malgun Gothic',sans-serif}main{max-width:960px;margin:auto;padding:24px}header{color:#fff1d1;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}header p{margin:0}h1,h2,h3{line-height:1.25;margin:0 0 16px}h1{font: bold clamp(30px,6vw,60px)/1.18 Georgia,'Malgun Gothic',serif}.panel{background:#fff5dc;padding:clamp(18px,4vw,40px);border-radius:20px;margin-top:18px;border:1px solid #c6ad76}.hero{min-height:330px;display:grid;align-content:center;background:radial-gradient(ellipse at 85% 0%,#f4d78c,transparent 55%),#fff5dc}.map{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px;border-radius:16px;background:linear-gradient(155deg,#aabc84,#d8c38a 48%,#adc3a0)}button{font:inherit;font-weight:bold;cursor:pointer;border:0;border-radius:10px;background:#315942;color:#fff;padding:10px 16px;text-align:left}button:hover:not(:disabled){background:#20412e}button:focus-visible{outline:3px solid #b04e20;outline-offset:3px}button:disabled{opacity:.62;cursor:default}.tile{min-height:94px}.tile span{display:block;font-size:24px}.light,.light:hover:not(:disabled){background:#e9d8aa;color:#27382c}.answer{display:block;width:100%;margin:8px 0}.clues{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.status{min-height:1.65em;color:#75401c;font-weight:bold}.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.record{background:#f0e2bd;border-left:4px solid #8a7346;padding:12px 16px;margin:14px 0}.rebuilt{color:#34503a;font-weight:bold}@media(max-width:560px){main{padding:12px}.map{grid-template-columns:repeat(2,1fr);padding:8px}.tile{padding:8px;min-height:76px}}
+
+.village-scene{position:relative;isolation:isolate;aspect-ratio:1672/941;border-radius:15px;overflow:hidden;background:#b4ad75;margin:12px 0 18px}
+.village-scene>img{display:block;width:100%;height:100%}
+.landmark{position:absolute;z-index:2;transform:translate(-50%,-50%);text-align:center;white-space:nowrap;min-height:34px;padding:4px 10px;border:2px solid #fff2cb;background:#fff2d3;color:#402d1c;box-shadow:0 2px 5px #281b1590;font-size:clamp(11px,1.8vw,17px)}
+.landmark:hover:not(:disabled),.landmark:focus-visible{background:#f9cd6c;color:#302215}
+.landmark:disabled{background:#42372b;color:#fff4d7;opacity:.88;border-color:#e7cd99}
+.landmark.current{border-color:#ffdb76;box-shadow:0 0 0 3px #713e23,0 0 14px #fff09a}
+.stage-art{float:right;width:min(30%,190px);margin:0 0 12px 12px}
+.panel::after{content:'';display:block;clear:both}
+.sprite{background-repeat:no-repeat;pointer-events:none}
+.repair-art{position:absolute;transform:translate(-50%,-50%);z-index:1}
+@media(max-width:450px){.landmark{padding:2px 4px;min-height:28px;border-width:1px}.stage-art{width:28%;margin-left:6px}}
+
+.panel{box-shadow:0 8px 30px #101e18aa}.hero{color:#fff4da;background-size:cover;background-position:center}.hero h1,.hero p{text-shadow:0 2px 5px #291a0d}.hero p{max-width:550px;font-weight:bold}
+.quest-scene{position:relative;isolation:isolate;overflow:hidden;display:grid;align-items:end;min-height:220px;padding:16px;border:3px solid #68452e;border-radius:16px;background-size:205%;margin:12px 0 16px;background-color:#c9a76e}
+.quest-scene .stage-art{float:none;width:min(34%,170px);margin:0;filter:drop-shadow(0 4px 4px #26140580)}
+.dialogue{background:#fff2d9f5;border:2px solid #8b5634;border-radius:12px;padding:13px 16px;margin-top:6px}.dialogue p,.dialogue h3{margin:0}.dialogue h3{color:#89501f}
+.board{display:grid;gap:9px;padding:14px;background:#a87348;border:3px solid #70472c;border-radius:12px;margin:12px 0 16px}.board.cols{grid-template-columns:repeat(3,minmax(0,1fr))}.board .answer,.board .paper{margin:0;min-height:64px}.paper{background:linear-gradient(120deg,#fff4d6,#eed0a0);border:2px solid #795237;color:#402d1c;border-radius:7px;padding:8px;font-size:clamp(12px,2vw,16px);overflow-wrap:anywhere}.paper:hover:not(:disabled){background:#fff9ec;color:#402d1c}.paper[aria-pressed=true]{background:#f8d47a;border-color:#523317}.paper.waiting{opacity:.75;border-style:dashed}
+.scale{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end;min-height:125px;padding:12px;margin:12px 0;background:#eed09c;border:3px solid #765033;border-radius:12px}.scale::before{content:'';position:absolute;left:50%;top:12%;bottom:10%;border-left:8px solid #795032;transform:translateX(-50%)}.pan{z-index:1;text-align:center;background:#fff1cd;border:3px solid #795032;border-radius:8px 8px 22px 22px;padding:7px}.sacks{height:42px;color:#8b4f22;display:flex;justify-content:center;align-items:end;gap:2px}.sack{display:inline-block;width:18px;height:23px;background:#cb974c;border:2px solid #784722;border-radius:40% 40% 45% 45%;box-shadow:inset 3px 0 #e8bc73}
+.ledger{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#835634;border:4px solid #835634;border-radius:10px;margin:12px 0}.ledger>section{background:#fff0cb;padding:10px;border-radius:5px}.ledger p{margin:6px 0;font-size:.9em}.ledger h4{margin:0 0 8px}.ledger .answer,.history .answer{margin:5px 0}
+.history{position:relative;max-width:480px;height:230px;margin:12px auto;background:#a8c9c5;border:3px solid #6b5337;border-radius:12px;overflow:hidden}.history::before{content:'';position:absolute;inset:5% 20% 5% 18%;background:#d8ce91;clip-path:polygon(22% 3%,66% 0%,75% 14%,98% 12%,84% 30%,64% 40%,79% 55%,91% 71%,83% 87%,59% 97%,40% 89%,30% 69%,34% 53%,18% 44%,3% 29%,11% 15%)}.history .answer{position:absolute;width:auto;left:27%;top:23%}.history button.answer:nth-of-type(2){left:48%;top:66%}
+.work-marker{white-space:normal;max-width:24%;line-height:1.2}.quiz-board{background:#e6c499}.quiz-board .answer{min-height:48px}
+@media(max-width:480px){.board{padding:8px;gap:5px}.board.cols{grid-template-columns:1fr}.quest-scene{min-height:170px}.work-marker{font-size:10px}.ledger>section{padding:5px}}
+
+.notice-sheet{max-width:290px;background:#fff0c5;border:2px solid #785137;border-top:7px solid #966337;box-shadow:3px 4px 0 #452b2255;padding:9px 14px;color:#3b291f}
+.notice-sheet strong{display:block}.notice-sheet p{margin:3px 0;font-size:.85em}
+.notice-on-map{position:absolute;left:56%;top:44%;transform:translate(-50%,-50%);padding:1px 4px;font-size:clamp(9px,1.5vw,14px);pointer-events:none}
+.history-pin{position:absolute;font-weight:bold;color:#5a371f;font-size:.85em;pointer-events:none}.history-pin.north{left:17%;top:8%}.history-pin.south{left:43%;bottom:5%}
+.evidence-slot{border:2px dashed #926746;border-radius:7px;background:#fff1cc;padding:9px;margin:0}.evidence-slot.filled{border-style:solid;border-color:#6d7544}.evidence-slot small{display:block;color:#6d492e}
+.scale{align-items:start}.scale .pan{transition:transform .24s;transform:translateY(var(--dip,0px))}.scale::after{content:'';position:absolute;top:24px;left:14%;right:14%;height:7px;background:#80502f;transform:rotate(var(--tilt,0deg));border-radius:6px}.scale .pan{margin-top:25px}
+@media(prefers-reduced-motion:reduce){.scale .pan{transition:none}}
+
+.case-files{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.case-doc{background:#fff0ce;border:2px solid #795237;border-radius:9px;padding:13px;color:#402d1c}.case-doc h4,.case-doc p{margin:0 0 6px}.case-doc time{font-size:.87em;color:#794821;font-weight:bold}.case-doc .seal{border:1px solid #9b4530;color:#9b4530;padding:2px 6px;font-size:.8em}.case-doc .answer{margin-bottom:0}.case-brief{color:#714524;font-weight:bold}@media(max-width:530px){.case-files{grid-template-columns:1fr}}
+
+.case-slot{display:block;min-height:90px;border:2px dashed #e4bb82;border-radius:8px;padding:8px;background:#6b452d;color:#fff2d4}.case-slot .case-doc{margin-top:5px}.case-doc[role=button]{cursor:grab;touch-action:none;user-select:none}.case-doc[role=button]:focus-visible,.case-slot:focus-visible{outline:3px solid #e8a93d;outline-offset:2px}.case-doc[data-picked]{outline:3px solid #e8a93d}.case-drag{position:fixed;z-index:20;pointer-events:none;opacity:.88;box-shadow:0 8px 24px #3c251888}.case-slot:disabled{opacity:1}.case-slot.empty{width:100%}.case-slot .case-doc p{font-size:.85em}
+
+.route-glow{animation:route-glow 1.3s ease-in-out infinite;background:#ffe39c}.route-glow::after{content:'✦';position:absolute;right:-9px;top:-13px;color:#fff1a2;text-shadow:0 0 6px #663815}
+@keyframes route-glow{50%{box-shadow:0 0 0 7px #ffdb7670,0 0 24px 9px #fff098;filter:brightness(1.16)}}
+.office-yard>img{width:100%;height:100%;object-fit:cover}.loose-paper{position:absolute;z-index:2;transform:translate(-50%,-50%);width:44px;height:44px;padding:0;background:transparent!important;display:grid;place-items:center}.loose-paper::before{content:'';width:24px;height:17px;border:1px solid #684833;border-radius:2px;background:repeating-linear-gradient(#fff1cf 0 3px,#b99363 3px 4px,#fff1cf 4px 6px);box-shadow:2px 3px 4px #67442380;transform:rotate(var(--angle))}.loose-paper:hover::before,.loose-paper:focus-visible::before{outline:2px solid #fff3a8}
+@media(prefers-reduced-motion:reduce){.route-glow{animation:none}}
+
+.local-scene{position:relative;aspect-ratio:2;border:3px solid #68452e;border-radius:15px;background-size:300% 200%;margin:12px 0 16px;overflow:hidden}
+.quest-scene{background-size:cover;background-position:center}
+.discovery{position:absolute;transform:translate(-50%,-50%);border:2px solid transparent;background:transparent;color:#fff4cf;padding:0;width:20%;height:37%;display:grid;place-items:end center}
+.discovery:hover:not(:disabled),.discovery:focus-visible{background:#fff0b333;border-color:#ffda85}.discovery span{font-size:18px;line-height:1;padding:4px;text-shadow:0 2px 4px #412a19;background:#4e3823b0;border-radius:50%}
+
+.scene-dialogue{position:fixed;z-index:8;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(calc(100% - 24px),820px);padding:14px 16px;background:#fff2d9;border:3px solid #794e30;border-radius:13px;box-shadow:0 6px 24px #291a11a0;color:#402d1c;animation:dialogue-in .18s ease-out}
+.scene-dialogue strong{display:block;color:#873f1b}.scene-dialogue p{margin:4px 0 10px}.scene-dialogue button{min-height:42px}.scene-dialogue .bar{justify-content:flex-end}
+@keyframes dialogue-in{from{opacity:0;transform:translate(-50%,10px)}}@media(prefers-reduced-motion:reduce){.scene-dialogue{animation:none}}
+
+body{font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;word-break:keep-all;overflow-wrap:anywhere}
+h1,h2,h3,.map-sign,.scene-dialogue strong{font-family:'Jua','Noto Sans KR','Malgun Gothic',sans-serif}
+.case-doc time,.case-doc p,.status{font-variant-numeric:tabular-nums}.scene-dialogue strong{color:#66391f;font-size:1.15em}
+.map-sign,.map-sign:hover:not(:disabled){min-height:44px;padding:4px 9px;background:repeating-linear-gradient(2deg,#e5b777 0 4px,#efc88e 5px 9px);color:#462a18;border:2px solid #734723;border-radius:12px 10px 11px 8px;box-shadow:inset 0 0 0 2px #ffe3ac,0 3px 0 #6b462c;font-weight:800}
+.map-sign:disabled{background:#b8a389;color:#30251d;opacity:.9}.map-sign.is-done{background:#d7ce95}.map-sign.glint{border-color:#fff1ab}
+.discovery span{display:none}.discovery{min-width:44px;min-height:44px}.discovery:not(.glint):hover,.discovery:not(.glint):focus-visible{border-color:#ffe0a2}
+.glint::after{content:'✦';position:absolute;top:8%;right:9%;color:#fff4b2;font-size:clamp(14px,2.3vw,23px);line-height:1;text-shadow:0 0 5px #744019,0 0 9px #ffc347;pointer-events:none;animation:soft-glint 1.65s ease-in-out infinite alternate}
+.glint:nth-of-type(even)::after{animation-delay:.35s}.glint.map-sign::after{top:-8px;right:-6px}
+.loose-paper.glint::after{top:3px;right:4px;font-size:15px}.work-marker{max-width:29%}
+@keyframes soft-glint{from{opacity:.48;transform:scale(.78)}to{opacity:1;transform:scale(1.14)}}
+@media(prefers-reduced-motion:reduce){.glint::after{animation:none}.glint{outline:1px solid #ffe4a1;outline-offset:-2px}}
+@media(max-width:480px){.map-sign{min-height:44px;padding:3px 4px;font-size:11px}.scene-dialogue{max-height:52dvh;overflow:auto}}
+
+.scene-target,.scene-target:hover:not(:disabled),.scene-target:focus-visible{
+ position:absolute;z-index:3;left:var(--x);top:var(--y);transform:translate(-50%,-50%);
+ width:var(--w);height:var(--h);min-width:44px;min-height:44px;padding:0;border:0;
+ background:none;box-shadow:none;outline:none;border-radius:0;touch-action:manipulation
+}
+.scene-target>img,.scene-target>.sack-stack{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.scene-target>img{transform:rotate(var(--rotation,0deg))}
+.scene-target:hover::before,.scene-target:focus-visible::before{content:'';position:absolute;width:8px;height:8px;bottom:8%;left:50%;border-bottom:2px solid #ffe8a3;border-radius:50%;filter:drop-shadow(0 1px 1px #422610)}
+.scene-target.glint::after{top:var(--spark-y,12%);right:var(--spark-right,10%);font-size:clamp(13px,1.55vw,19px);text-shadow:0 1px 3px #72421b}
+@media(prefers-reduced-motion:reduce){.scene-target.glint{outline:none}.scene-target.glint::after{opacity:1}}
+.scene-prop{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);transform:translate(-50%,-50%);object-fit:contain;pointer-events:none;z-index:2}
+.sack-stack{display:flex;flex-wrap:wrap;align-content:center;justify-content:center}
+.sack-stack img{width:33%;height:48%;object-fit:contain;margin:0 -1%}
+.scene-scale>.sack-stack{position:absolute;transform:translate(-50%,-50%);width:17%;height:21%;pointer-events:none}
+.scene-scale>.sack-stack:nth-child(1){left:50%;top:65%}
+.scene-scale>.sack-stack:nth-child(2){left:75%;top:62%}
+.office-docs:empty{display:none}
+@font-face{font-family:'Joseon Ink';src:url(asset-1.woff) format('woff');font-display:swap}
+.case-doc{
+ border:1px solid #af8556;border-radius:2px 5px 3px 6px;
+ background:radial-gradient(ellipse at 30% 22%,#fff5db 0%,transparent 70%),repeating-linear-gradient(174deg,#80532c06 0px 1px,transparent 1px 6px),#ead0a2;
+ box-shadow:inset 0 0 16px #965a2a27,2px 3px 5px #40230d30;
+ color:#38271b;padding:clamp(12px,2.3vw,22px)
+}
+.case-doc :is(time,h4,p,.seal){font-family:'Joseon Ink','Noto Serif CJK KR','Batang',serif}
+.case-doc h4{color:#362517;font-size:1.3em;font-weight:700;margin:.2em 0 .45em}
+.case-doc p{line-height:1.8;margin:0 0 .6em}
+.case-doc time{color:#694b32;font-weight:400}
+.case-doc .seal{display:inline-block;margin:.1em 0 .35em;border:1px solid #91402d;color:#853524;box-shadow:inset 0 0 0 1px #91402d55}
+</style>
+<main><header><p>5학년 2학기 사회 · 조선 후기</p><div id="hud" class="bar"></div></header><section id="game" class="panel"></section></main>
+<script>
+'use strict';
+const caseFiles=[
+ {name:'세금 독촉장',date:'6월 18일',seal:'버들골 관아',body:'아랫말 김두석에게. 올해 논세로 쌀 네 자루를 사흘 안에 관아로 가져올 것. 징수 담당 박만복.'},
+ {name:'거래 기록',date:'5월 9일',seal:'거래 장부',body:'박만복에게 은전 스무 냥을 받음. 그 대가로 버들골 세금 징수 관직을 맡게 해 주기로 약속함.'},
+ {name:'관직 임명 문서',date:'5월 21일',seal:'임명 문서',body:'박만복을 버들골 세금 징수 담당 관리로 임명함. 박만복은 마을의 세금 장부를 넘겨받을 것.'},
+ {name:'논세 기준 장부',date:'4월 25일',seal:'버들골 관아',body:'올해 아랫말 김두석이 낼 논세는 쌀 두 자루로 정함. 해당 논에 추가로 거둘 세금은 없음.'}
+];
+const grainLedger='마을 주민에게 건넨 곡식은 두 자루. 주민이 필요 없다고 했으나 받아 가게 함. 갚으라고 요구한 곡식은 다섯 자루.';
+const stages=[
+{icon:'📜',place:'마을 입구',title:'이상한 세금 고지서',npc:'장터에 다녀온 주민',talk:'흉년과 전염병으로 살림이 어려운데 새 관리가 세금까지 더 내라네. 관아 앞에 떨어진 문서들을 살펴봐 주게.',steps:[
+{prompt:'관아 앞을 둘러보고 사건에 관련된 문서 네 장을 찾으세요.',search:true},
+{prompt:'문서의 날짜를 읽고, 박만복과 관련된 세 사건을 일어난 순서대로 놓으세요.',caseOrder:true},
+{prompt:'관리가 정해진 양보다 쌀을 더 거두려 했음을 보여 주는 문서 두 장을 고르세요.',caseEvidence:true}
+],
+quiz:['돈을 건넨 기록과 임명 문서가 보여 주는 문제는?', ['과거 시험을 자주 열었다','돈을 받고 관직을 내주었다','백성이 직접 관리를 뽑았다'],[1],'세도 정치 시기, 일부 세도 가문이 권력을 쥐고 돈을 받고 관직을 내주는 일이 벌어졌어요.']},
+{icon:'🌾',place:'논밭',title:'수확이 없는데 세금을?',npc:'논을 살피는 농부',talk:'아랫논은 물에 잠겨 벼를 심지도 못했어. 윗논에선 정해진 양의 두 배를 가져갔지.',steps:[
+{prompt:'논 세 곳을 눌러 기록을 조사하세요.',cards:['아랫논 · 농사를 못 지었는데 쌀 2자루 징수','윗논 · 기준 2자루, 실제 4자루 징수','건넛논 · 기준 2자루, 실제 2자루 징수'],inspect:true},
+{prompt:'부당한 징수가 있었던 논을 모두 표시하세요.',cards:['아랫논','윗논','건넛논'],correct:[0,1],hint:'농사를 못 지었는데 매긴 세금과 기준보다 더 거둔 세금을 찾아보세요.'}],
+quiz:['기준이 쌀 두 자루인데 네 자루를 거뒀다면 어떤 문제인가요?',['정해진 양보다 더 거뒀다','세금을 거두지 않았다','기준만큼만 거뒀다'],[0],'농사를 짓지 못한 땅에도 세금을 매기고, 정해진 양을 넘겨 걷기도 했어요.']},
+{icon:'⚖️',place:'곡식 창고',title:'빌린 것보다 훨씬 많은 곡식',npc:'곡식 장부',talk:grainLedger,steps:[
+{prompt:'저울 왼쪽에 실제 받은 양을 올리세요.',cards:['곡식 두 자루','곡식 세 자루','곡식 다섯 자루'],correct:[0]},
+{prompt:'저울 오른쪽에 장부에 적힌 갚을 양을 올리세요.',note:'⚖️ 왼쪽 접시 · 받은 곡식 두 자루',cards:['곡식 두 자루','곡식 세 자루','곡식 다섯 자루'],correct:[2]},
+{prompt:'저울에 올린 두 양을 비교하고 부당한 점을 모두 표시하세요.',note:'⚖️ 받은 양 두 자루 / 갚을 양 다섯 자루',cards:['주민의 뜻에 어긋나게 곡식을 빌려줌','빌린 곡식보다 세 자루나 더 갚게 함','빌린 만큼만 갚게 함'],correct:[0,1]}],
+quiz:['이 주민이 겪은 일은 무엇인가요?',['곡식을 선물로 받았다','원하는 만큼만 빌렸다','억지로 빌리고 많은 이자를 내게 됐다'],[2],'어려울 때 빌려주는 곡식 제도를 악용해 많은 이자를 받아 냈어요.']},
+{icon:'🧾',place:'군포 징수소',title:'어린아이에게도 군포를?',npc:'마을 기록을 맡은 주민',talk:'군포는 군대에 가는 대신 내는 세금이야. 그런데 우리 집 일곱 살 아이 이름까지 적혀 있어.',steps:[
+{prompt:'군포 명단과 주민 기록을 대조해 잘못 매긴 두 항목을 표시하세요.',note:'주민 기록 · 우물집 만석 7세 / 언덕집 만석 27세, 군포 납부 대상 / 장터집 덕수 작년에 사망',cards:['우물집 만석','언덕집 만석','장터집 덕수'],correct:[0,2],hint:'같은 이름이 있어요. 집과 나이, 살아 있는지를 확인하세요.'}],
+quiz:['부당하게 군포가 매겨진 사람을 모두 고르세요.',['일곱 살 어린이','군포를 내야 하는 성인 남성','작년에 세상을 떠난 사람'],[0,2],'부패한 관리들은 어린아이와 죽은 사람에게까지 군포를 매겼어요.']},
+{icon:'📌',place:'장터',title:'장터에 붙은 방',npc:'장터 주민',talk:'더는 참을 수 없다고 세금 내기를 거부하는 이들도 있어. 우리도 장터 벽에 방을 붙여 뜻을 알리세.',steps:[
+{prompt:'장터 벽에 붙일 방에 실을 근거를 모두 고르세요.',cards:['농사를 못 지은 논에도 세금을 매긴 기록','억지로 곡식을 빌려주고 이자를 더 받은 장부','숨은 보물이 있다는 소문','어린아이에게 군포를 매긴 명단'],correct:[0,1,3]},
+{prompt:'역사 지도에서 홍경래의 난 소식을 붙일 곳을 고르세요.',cards:['북서쪽 · 평안도','남쪽 · 진주'],correct:[0]},
+{prompt:'진주 농민 봉기 소식을 붙일 곳을 고르세요.',cards:['북서쪽 · 평안도','남쪽 · 진주'],correct:[1]}],
+quiz:['진주에서 농민들이 부당한 세금에 맞서 일어난 사건은?',['홍경래의 난','진주 농민 봉기','관직 매매'],[1],'홍경래의 난은 평안도에서 일어났고, 진주 농민 봉기는 진주에서 일어났어요. 백성들의 봉기는 여러 지역으로 퍼졌어요.']},
+{icon:'🌱',place:'공동 작업터',title:'다시 일어서는 마을',npc:'암행어사',talk:'백성의 사정을 알아보러 왔소. 어떤 일이 있었는지 장부와 함께 알려 주시오.',steps:[
+{prompt:'“갚을 때 빌린 양보다 훨씬 많이 내라고 했어요.” 어떤 증거를 제출할까요?',cards:['논밭 장부','곡식 장부','군포 명단'],correct:[1]},
+{prompt:'“우리 집 아이 이름까지 명단에 있었어요.” 어떤 증거를 제출할까요?',cards:['논밭 장부','곡식 장부','군포 명단'],correct:[2]},
+{prompt:'“물에 잠겨 농사를 못 지었는데도 세금을 냈어요.” 어떤 증거를 제출할까요?',cards:['논밭 장부','곡식 장부','군포 명단'],correct:[0]},
+{prompt:'주민들과 마을을 돌보세요. 할 일을 누를 때마다 마을이 달라져요.',cards:['막힌 물길을 이어 논에 물을 댄다','모은 곡식을 식량이 모자란 집에 나눈다','다음 농사에 쓸 씨앗을 마련한다'],work:true}],
+quiz:['암행어사가 다녀간 뒤에도 마을에 문제가 남은 까닭은?',['암행어사가 모든 문제를 해결했다','정부가 세금 문제를 고치려 했지만 큰 효과를 거두지 못했다','정부는 아무런 대응을 하지 않았다'],[1],'나라에서 암행어사를 보내고 세금 문제를 해결하려 했지만, 백성들의 어려움은 계속됐어요.']}
+];
+const art=["asset-2.png","asset-3.png","asset-4.png"];
+const stagePanels='asset-5.png';
+const discoveries=[
+ ['종이를 든 주민',61,60,'주민이 종이를 읽고 있습니다. 종이 끝에 관아의 인장이 보입니다.','옹기',89,74,'담장 아래 장독이 놓여 있습니다.'],
+ ['모를 살피는 농부',58,59,'농부가 물에 잠긴 모를 살피며 한숨을 쉽니다.','모 바구니',81,74,'심을 모가 바구니에 남아 있습니다.'],
+ ['곡식 장부',34,86,'저울 옆 장부에 주민이 받은 곡식과 갚아야 할 곡식이 적혀 있습니다.','곡식 자루',15,67,'창고 한쪽에 묶인 곡식 자루가 쌓여 있습니다.'],
+ ['펼친 군포 명단',62,62,'군포 명단에 어린아이의 이름이 적혀 있습니다.','붓과 벼루',74,55,'명단 옆에 아직 먹물이 마르지 않은 붓이 있습니다.'],
+ ['장터 흙벽',64,52,'장터를 오가는 사람이라면 누구나 볼 수 있는 자리입니다.','채소 좌판',16,74,'좌판 주인은 사람들이 세금 이야기를 하고 있었다고 말합니다.'],
+ ['일손을 기다리는 수레',66,54,'수레 앞에 주민들의 증언과 재건에 쓸 농기구가 모여 있습니다.','막힌 물길',25,70,'떠내려온 나뭇가지가 물길을 막고 있습니다.']
+];
+const landmarks=[[50,83],[23,72],[22,34],[83,27],[56,44],[82,64]];
+const objects=[[100,65,300,445],[550,115,370,401],[1008,115,460,385],[27,620,450,315],[516,608,440,324],[974,635,539,307]];
+const repairs=[
+ {crop:[0,167,733,447],at:[65,74,19]},
+ {crop:[757,51,643,652],at:[22,38,12]},
+ {crop:[1517,235,599,356],at:[80,72,11]}
+];
+const key='joseon-village-v1';
+function sprite(kind,crop,cls,parent){
+  const [x,y,w,h]=crop;
+  const [sw,sh]=kind===1?[1536,1024]:[2172,724];
+  const el=put('div','','sprite '+cls,parent);
+  el.setAttribute('aria-hidden','true');
+  el.style.aspectRatio=w+'/'+h;
+  el.style.backgroundImage='url("'+art[kind]+'")';
+  el.style.backgroundSize=(sw/w*100)+'% '+(sh/h*100)+'%';
+  el.style.backgroundPosition=(x/(sw-w)*100)+'% '+(y/(sh-h)*100)+'%';
+  return el;
+}
+function drawVillage(interactive){
+  const scene=put('div','','village-scene');
+  const img=put('img','','',scene);
+  img.alt='산과 물길 사이에 자리한 조선 후기 버들골 마을';
+  img.src=art[0];
+  state.work.forEach(i=>{
+    const repair=repairs[i];
+    const layer=sprite(2,repair.crop,'repair-art',scene);
+    const [x,y,w]=repair.at;
+    Object.assign(layer.style,{left:x+'%',top:y+'%',width:w+'%'});
+  });
+  if(state.done.includes(4))sceneProp(scene,[56.5,43,4,7],propArt.notice);
+  if(interactive)stages.forEach((s,i)=>{
+    const done=state.done.includes(i), open=unlocked(i);
+    const b=btn(s.place+(done?' ✓':open?'':' 🔒'),()=>enter(i),scene,'landmark map-sign'+(done?' is-done':open&&state.done.length===0?' glint':''),!open);
+    b.setAttribute('aria-label',s.place+(done?' 완료':open?'':' 잠김'));
+    const [x,y]=landmarks[i];
+    Object.assign(b.style,{left:x+'%',top:y+'%'});
+  });
+  return scene;
+}
+const game=document.querySelector('#game'), hud=document.querySelector('#hud');
+const fresh=()=>({started:false,done:[],work:[]});
+let state=fresh(), screen='home', stage=0, step=0, chosen=[], feedback='', graded=false, resetPending=false;
+try {
+  const saved=JSON.parse(localStorage.getItem(key));
+  if(saved && Array.isArray(saved.done) && Array.isArray(saved.work)) state=saved;
+} catch {}
+function save(){try{localStorage.setItem(key,JSON.stringify(state));}catch{}}
+function matching(a,b){return a.length===b.length&&b.every(n=>a.includes(n));}
+function unlocked(i){return i===0||(i<4&&state.done.includes(0))||(i===4&&[1,2,3].every(n=>state.done.includes(n)))||(i===5&&state.done.includes(4));}
+function btn(label,fn,parent=game,cls='',disabled=false){
+  const b=document.createElement('button'); b.textContent=label;b.disabled=disabled;if(cls)b.className=cls;
+  b.addEventListener('click',fn);parent.append(b);return b;
+}
+function put(tag,value,cls='',parent=game){const e=document.createElement(tag);e.textContent=value;e.className=cls;parent.append(e);return e;}
+function go(to){selectedDocument=null;screen=to;feedback='';chosen=[];graded=false;render();window.scrollTo(0,0);game.querySelector('h1,h2')?.focus({preventScroll:true});}
+function title(t,tag='h2'){put(tag,t).tabIndex=-1;}
+function enter(i){stage=i;step=0;go('explore');}
+function next(){step++;go(step===stages[stage].steps.length?'quiz':'task');}
+function complete(){if(!state.done.includes(stage))state.done.push(stage);save();go(stage===5?'end':'map');}
+function render(){
+ game.replaceChildren();hud.replaceChildren();game.className='panel';game.style.backgroundImage='';
+ if(state.started){
+   const evidence=state.done.filter(i=>i>=1&&i<=3).length;
+   put('span','증거 '+evidence+'/3 · 복구 '+state.work.length+'/3','',hud);
+   if(screen!=='home'&&screen!=='map')btn('마을 지도',()=>go('map'),hud,'light');
+ }
+ if(screen==='home'){
+   game.classList.add('hero');game.style.backgroundImage='linear-gradient(90deg,#332315ed,#33231555),url('+art[0]+')';title('조선 후기 마을 재건기','h1');
+   put('p','흉년과 전염병을 겪은 마을에 또 세금 독촉장이 날아왔다. 주민들의 이야기를 듣고, 장부에 숨은 문제를 찾아 마을을 다시 일으키자.');
+   const row=put('div','','bar');
+   btn(state.started?'이어 하기':'마을로 출발',()=>{state.started=true;save();go(state.done.includes(5)?'end':'map');},row);
+   if(state.started)btn('처음부터',()=>{resetPending=true;render();},row,'light');
+   if(resetPending){
+     put('p','저장한 진행을 지우고 새로 시작할까요?');
+     const confirm=put('div','','bar');
+     btn('새로 시작',()=>{state=fresh();state.started=true;resetPending=false;save();go('map');},confirm);
+     btn('취소',()=>{resetPending=false;render();},confirm,'light');
+   }
+   return;
+ }
+ if(screen==='office-route'){
+   title('군포 징수소로 가기');
+   put('p','관아 앞에 문서가 떨어져 있어요. 반짝이는 군포 징수소를 눌러 마당을 살펴보세요.');
+   const scene=drawVillage(false);
+   pin(scene,'군포 징수소',landmarks[3],()=>go('task'),false,' map-sign glint');
+   return;
+ }
+ if(screen==='map'){
+   title('버들골 마을 지도');put('p','열린 장소를 골라 주민을 도와주세요. 완료한 임무도 다시 볼 수 있어요.');
+   drawVillage(true);
+   renderVillage();
+   btn('시작 화면',()=>go('home'),game,'light');
+   if(state.done.includes(5))btn('엔딩 보기',()=>go('end'));
+   return;
+ }
+ if(screen==='end'){
+   title('다시 일어서는 마을');drawVillage(false);renderVillage();
+   put('p','주민들이 물길을 고치고, 곡식을 나누고, 다음 농사를 준비했어요. 나라에서도 세금 문제를 고치려 했지만 백성들의 어려움은 계속됐어요.');
+   put('p','조선 후기 백성들의 생활은 왜 어려워졌고, 백성들은 이에 어떻게 대응했을까요?','record');
+   btn('마을 지도 보기',()=>go('map'));return;
+ }
+ const s=stages[stage];
+ if(screen==='explore'){
+   title(s.place);
+   put('p','장소를 둘러보세요. 궁금한 물건이나 사람을 눌러 살펴볼 수 있어요.');
+   const scene=localScene(stage);
+   const [lead,,,hint,side,,,detail]=discoveries[stage];
+   const [primary,secondary]=exploreProps[stage];
+   sceneTarget(scene,lead,primary,()=>openSceneDialogue(lead,s.npc,[hint,s.talk],true),true,stage===2?propArt.papers[3]:null);
+   sceneTarget(scene,side,secondary,()=>openSceneDialogue(side,side,[detail],false));
+   if(stage===4&&state.done.includes(4))sceneProp(scene,marketWall,propArt.notice);
+   return;
+ }
+ title(s.icon+' '+s.title);
+ if(screen==='talk'){
+   localScene(stage);
+   put('p',discoveries[stage][3],'record');
+   const dialogue=put('div','','dialogue');
+   put('h3',s.npc,'',dialogue);put('p',s.talk,'',dialogue);
+   btn('임무 시작',()=>go(stage===0?'office-route':'task'));return;
+ }
+ if(screen==='task'){
+   const t=s.steps[step];put('p','임무 '+(step+1)+' / '+s.steps.length);put('h3',t.prompt);
+   if(t.note&&stage!==2&&stage!==3)put('p',t.note,'record');
+   if(t.search||t.caseOrder||t.caseEvidence){
+     renderCase(t);
+   }else if(t.inspect){
+     const scene=drawVillage(false);
+     const names=['아랫논','윗논','건넛논'];
+     const plots=[[18,87,15,7],[22,63,11,6],[15,73,13,7]];
+     t.cards.forEach((card,i)=>{
+       if(!chosen.includes(i))sceneTarget(scene,names[i],plots[i],()=>{chosen.push(i);render();},true);
+     });
+     const records=put('div','','board cols');
+     t.cards.forEach((card,i)=>put('div',chosen.includes(i)?card:names[i]+' · 조사 전','paper',records));
+     if(chosen.length===t.cards.length)btn('조사 기록 확인',next);
+   }else if(t.work){
+     const scene=drawVillage(false);
+     const props=[[71,76,10,11],[14,37,9,12],[80,71,10,10]];
+     t.cards.forEach((card,i)=>{
+       if(state.work.includes(i))return;
+       sceneTarget(scene,card,props[i],()=>{state.work.push(i);save();render();},true,
+         i===1?propArt.sack:i===2?propArt.seed:null);
+     });
+     renderVillage();
+     if(state.work.length===t.cards.length)btn('확인 퀴즈',next);
+   }else{
+     const board=taskBoard();
+     if(stage===4&&step===0&&graded){
+       const scene=game.querySelector('.local-scene');
+       const applyNotice=()=>{
+         marker.remove();
+         sceneProp(scene,marketWall,propArt.notice);
+         const nextButton=btn('다음',next);
+         nextButton.focus();
+       };
+       const marker=sceneTarget(scene,'흙벽에 방 붙이기',marketWall,applyNotice,true);
+     }
+     choices(t.cards,t.correct,()=>{graded=true;feedback='증거를 찾았어요.';render();},t.hint,board);
+     if(graded&&!(stage===4&&step===0))btn(step===s.steps.length-1?'확인 퀴즈':'다음',next);
+   }
+ }else{
+   const [question,options,correct,explanation]=s.quiz;
+   const scene=questScene();
+   const prompt=put('div','','dialogue',scene);
+   put('h3','확인 퀴즈','',prompt);put('p',question,'',prompt);
+   choices(options,correct,()=>{graded=true;feedback=explanation;render();},null,put('div','','board quiz-board'));
+   if(graded)btn(stage===5?'재건 마무리':'임무 완료',complete);
+ }
+ const status=put('p',feedback,'status');status.setAttribute('role','status');
+}
+let selectedDocument=null;
+function drawCaseDocument(file,parent){
+  const card=put('article','','case-doc',parent);
+  put('time',file.date,'',card);put('h4',file.name,'',card);
+  put('p',file.body,'',card);put('span',file.seal,'seal',card);
+  return card;
+}
+function renderTimeline(task){
+  put('p','네 장 중 박만복이 돈을 건넨 일부터 세금을 독촉한 일까지 이어지는 문서 세 장을 놓으세요. 남은 한 장은 다음 조사에 쓸 거예요.','record');
+  put('p','문서 전체를 빈 칸으로 끌어 놓으세요. 문서를 누른 뒤 빈 칸을 눌러도 됩니다. 놓은 문서는 다시 누르면 아래로 돌아옵니다.');
+  const slots=put('div','','board cols');
+  function place(doc,index){
+    if(graded||chosen[index]!=null||chosen.includes(doc))return;
+    chosen[index]=doc;selectedDocument=null;feedback='';render();
+  }
+  for(let k=0;k<3;k++){
+    const doc=chosen[k];
+    if(doc==null){
+      const slot=btn((k+1)+'. 문서를 놓을 자리',()=>{if(selectedDocument!=null)place(selectedDocument,k);},slots,'case-slot empty',graded);
+      slot.dataset.caseSlot=k;
+    }else{
+      const slot=put('div',(k+1)+'. 배치한 문서','case-slot',slots);
+      const card=drawCaseDocument(caseFiles[doc],slot);
+      if(!graded){
+        card.setAttribute('role','button');card.tabIndex=0;
+        const remove=()=>{delete chosen[k];feedback='';render();};
+        card.onclick=remove;
+        card.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();remove();}};
+      }
+    }
+  }
+  const files=put('div','','case-files');
+  caseFiles.forEach((file,doc)=>{
+    if(chosen.includes(doc))return;
+    const card=drawCaseDocument(file,files);
+    if(graded)return;
+    card.setAttribute('role','button');card.tabIndex=0;
+    card.setAttribute('aria-pressed',String(selectedDocument===doc));
+    if(selectedDocument===doc)card.dataset.picked='';
+    const choose=()=>{selectedDocument=selectedDocument===doc?null:doc;render();game.querySelector('[data-picked]')?.focus();};
+    card.onclick=choose;
+    card.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();choose();}};
+    card.onpointerdown=event=>{
+      if(event.button!==0)return;
+      const {pointerId,clientX:x,clientY:y}=event;
+      let ghost;
+      card.setPointerCapture(pointerId);
+      card.onpointermove=move=>{
+        if(!ghost&&Math.hypot(move.clientX-x,move.clientY-y)<7)return;
+        if(!ghost){
+          ghost=card.cloneNode(true);ghost.removeAttribute('tabindex');ghost.setAttribute('aria-hidden','true');
+          ghost.classList.add('case-drag');ghost.style.width=Math.min(card.offsetWidth,320)+'px';document.body.append(ghost);
+        }
+        ghost.style.left=(move.clientX+10)+'px';ghost.style.top=(move.clientY+8)+'px';
+      };
+      const cleanup=()=>{ghost?.remove();card.onpointermove=null;card.onpointerup=null;card.onpointercancel=null;card.onlostpointercapture=null;};
+      card.onpointercancel=cleanup;card.onlostpointercapture=cleanup;
+      card.onpointerup=up=>{
+        if(!ghost){cleanup();return;}
+        const target=document.elementFromPoint(up.clientX,up.clientY)?.closest('[data-case-slot]');
+        cleanup();card.onclick=null;
+        setTimeout(()=>{card.onclick=choose;},0);
+        if(target)place(doc,Number(target.dataset.caseSlot));
+      };
+    };
+  });
+  if(graded){btn('세금 액수 대조하기',next);return;}
+  btn('배치 지우기',()=>{chosen=[];selectedDocument=null;feedback='';render();},game,'light',!chosen.some(Number.isInteger));
+  btn('순서 확인',()=>{
+    graded=chosen.join(',')==='1,2,0';
+    feedback=graded?'5월 9일 거래 → 5월 21일 임명 → 6월 18일 독촉이 이어졌어요. 논세 기준 장부는 다음 조사에서 비교해요.':'세 사건을 기록한 문서를 골랐는지 확인하고, 문서의 날짜를 다시 읽어 보세요.';
+    render();
+  },game,'',chosen.filter(Number.isInteger).length!==3);
+}
+function renderCase(task){
+  if(task.search){
+    const scene=localScene(3);
+    const points=[[27,77,9,20],[38,89,9,17],[88,75,10,18],[76,90,10,18]];
+    points.forEach((point,i)=>{
+      if(chosen.includes(i))return;
+      const marker=sceneTarget(scene,'바닥에 떨어진 문서 '+(i+1),point,()=>{
+        chosen.push(i);
+        render();
+        game.querySelector('.office-docs article:last-child')?.focus({preventScroll:true});
+      },true,propArt.papers[i]);
+      marker.style.setProperty('--rotation',[-13,9,-8,17][i]+'deg');
+    });
+    put('p','찾은 문서 '+chosen.length+'/'+caseFiles.length);
+  }
+  if(task.caseOrder){
+    renderTimeline(task);
+    return;
+  }
+  const files=put('div','',task.search?'case-files office-docs':'case-files');
+  (task.search?chosen:caseFiles.map((_,i)=>i)).forEach(i=>{const file=caseFiles[i];
+    if(task.search&&!chosen.includes(i))return;
+    const card=put('article','','case-doc',files);
+    put('time',file.date,'',card);put('h4',file.name,'',card);put('p',file.body,'',card);put('span',file.seal,'seal',card);
+    if(task.search){card.tabIndex=-1;return;}
+    const picked=chosen.includes(i);
+    const button=btn(picked?'✓ 선택됨':task.caseOrder?'기록판에 놓기':'증거로 선택',()=>{
+      if(picked)chosen=chosen.filter(n=>n!==i);
+      else chosen.push(i);
+      feedback='';render();
+    },card,'answer paper',graded||(!picked&&chosen.length===(task.caseOrder?3:2)));
+    button.setAttribute('aria-pressed',String(picked));
+  });
+  if(task.search){
+    if(chosen.length===caseFiles.length)btn('사건 기록판 열기',next);
+    return;
+  }
+  if(!graded){
+    btn(task.caseOrder?'순서 확인':'증거 대조',()=>{
+      graded=task.caseOrder?chosen.join(',')==='1,2,0':matching(chosen,[0,3]);
+      feedback=task.caseOrder
+        ?graded?'5월 9일 거래 → 5월 21일 임명 → 6월 18일 독촉이 이어졌어요.':'박만복이 돈을 건넨 날, 임명된 날, 세금을 독촉한 날을 다시 찾아보세요.'
+        :graded?'같은 김두석의 논세가 두 자루에서 네 자루로 늘었어요. 박만복은 정해진 양보다 두 자루를 더 요구했어요.':'같은 사람에게 매긴 세금의 기준과 실제 요구량을 비교할 수 있는 두 문서를 찾아보세요.';
+      render();
+    },game,'',chosen.length!==(task.caseOrder?3:2));
+  }else btn(task.caseOrder?'세금 액수 대조하기':'확인 퀴즈',next);
+}
+function renderVillage(){
+  if(!state.work.length)return;
+  const changes=['💧 논에 물이 흐릅니다','🍚 주민들이 곡식을 나눴습니다','🌱 다음 농사에 쓸 씨앗이 모였습니다'];
+  put('p',state.work.map(i=>changes[i]).join(' · '),'rebuilt');
+}
+function openSceneDialogue(label,speaker,lines,startsMission){
+  game.querySelector('.scene-dialogue')?.remove();
+  const previous=document.activeElement;
+  let line=0;
+  const box=put('section','','scene-dialogue');
+  box.setAttribute('role','region');box.setAttribute('aria-label',label+' 대화');
+  const name=put('strong',lines.length>1?label:speaker,'',box);
+  const text=put('p',lines[0],'',box);text.setAttribute('aria-live','polite');
+  const controls=put('div','','bar',box);
+  const close=()=>{box.remove();previous?.focus();};
+  box.addEventListener('keydown',event=>{if(event.key==='Escape')close();});
+  btn('닫기',close,controls,'light');
+  if(startsMission){
+    const advance=btn('다음 ▸',()=>{
+      if(line===0){
+         line++;name.textContent=speaker;text.textContent=lines[line];advance.textContent='임무 시작 ▸';
+      }else go(stage===0?'office-route':'task');
+    },controls);
+    advance.focus();
+  }else controls.querySelector('button')?.focus();
+}
+function localScene(index){
+  const scene=put('div','','local-scene');
+  scene.style.backgroundImage='url('+stagePanels+')';
+  scene.style.backgroundPosition=(index%3*50)+'% '+(index<3?0:100)+'%';
+  scene.setAttribute('role','group');scene.setAttribute('aria-label',stages[index].place+' 전경');
+  return scene;
+}
+function questScene(){
+  const scene=put('div','','quest-scene');
+  const [x,y]=landmarks[stage];
+  scene.style.backgroundImage='url('+art[0]+')';
+  scene.style.backgroundPosition=x+'% '+y+'%';
+  return scene;
+}
+function pin(scene,label,point,action,disabled,extra=''){
+  const b=btn(label,action,scene,'landmark'+extra,disabled);
+  Object.assign(b.style,{left:point[0]+'%',top:point[1]+'%'});
+  return b;
+}
+const propArt={"papers": ["asset-6.webp", "asset-7.webp", "asset-8.webp", "asset-9.webp"], "sack": "asset-10.webp", "seed": "asset-11.webp", "notice": "asset-12.webp"};
+const grainLedgerPosition=[36,83,13,19];
+const exploreProps=[
+ [[61,62,18,59],[90,77,15,27]],
+ [[58,66,25,53],[79,77,15,29]],
+ [grainLedgerPosition,[15,76,24,37]],
+ [[62,61,15,16],[77,56,11,21]],
+ [[65,52,42,45],[15,77,26,38]],
+ [[65,48,34,41],[22,60,23,25]]
+];
+const marketWall=[65,53,17,36];
+function locate(element,[x,y,w,h]){
+ for(const [key,value] of Object.entries({x,y,w,h}))element.style.setProperty('--'+key,value+'%');
+}
+function sceneTarget(scene,label,position,action,active=false,artwork){
+ const target=btn('',action,scene,'scene-target'+(active?' glint':''));
+ locate(target,position);
+ target.setAttribute('aria-label',label);
+ if(artwork){
+   const picture=put('img','','',target);picture.alt='';picture.src=artwork;
+ }
+ return target;
+}
+function sceneProp(scene,position,artwork){
+ const picture=put('img','','scene-prop',scene);picture.alt='';picture.src=artwork;locate(picture,position);
+}
+function sackStack(parent,count){
+ const stack=put('div','','sack-stack',parent);
+ stack.setAttribute('aria-hidden','true');
+ for(let i=0;i<count;i++){
+   const sack=put('img','','',stack);sack.alt='';sack.src=propArt.sack;
+ }
+}
+function taskBoard(){
+  if(stage===2){
+    const scale=localScene(2);scale.classList.add('scene-scale');
+    const amounts=[2,3,5];
+    const left=step===0?(amounts[chosen[0]]||0):2;
+    const right=step===2?5:step===1?(amounts[chosen[0]]||0):0;
+    sackStack(scale,left);sackStack(scale,right);
+    sceneTarget(scale,'곡식 장부 열기',grainLedgerPosition,()=>openSceneDialogue('곡식 장부','곡식 장부',[grainLedger],false),true,propArt.papers[3]);
+    put('p','저울 왼쪽 바닥에 있는 장부를 눌러 곡식의 양을 다시 확인할 수 있어요.','record');
+    put('p','받은 양 '+left+'자루 · 갚을 양 '+right+'자루','record');
+  }
+  if(stage===3){
+    const ledger=put('div','','ledger');
+    const records=put('section','','',ledger);
+    put('h4','주민 기록','',records);
+    ['우물집 만석 · 7세','언덕집 만석 · 27세, 납부 대상','장터집 덕수 · 작년에 사망'].forEach(value=>put('p',value,'',records));
+    const register=put('section','','',ledger);
+    put('h4','군포 명단','',register);
+    return register;
+  }
+  if(stage===4&&step>0){
+    put('p','조선의 지역 위치를 단순하게 나타낸 그림','record');
+    const history=put('div','','history');
+    if(step===2)put('span','◆ 홍경래의 난','history-pin north',history);
+    if(step===2&&graded)put('span','◆ 진주 농민 봉기','history-pin south',history);
+    return history;
+  }
+  if(stage===1||stage===4||stage===5){
+    localScene(stage);
+    if(stage===5){
+      const tray=put('div','','board cols',game);
+      const records=['곡식 장부','군포 명단','논밭 장부'];
+      records.forEach((name,i)=>{
+        const filled=i<step||(i===step&&graded);
+        const slot=put('div',filled?name:'빈 증거 칸','evidence-slot'+(filled?' filled':''),tray);
+        put('small',filled?'암행어사에게 전달함':'증언에 맞는 기록을 고르세요','',slot);
+      });
+    }
+  }
+  return put('div','','board');
+}
+function choices(options,correct,onCorrect,hint,parent){
+  const multi=correct.length>1;
+  options.forEach((option,i)=>{
+    const b=btn((chosen.includes(i)?'✓ ':'')+option,()=>{
+      feedback='';
+      if(multi)chosen=chosen.includes(i)?chosen.filter(n=>n!==i):[...chosen,i];
+      else chosen=[i];
+      render();game.querySelectorAll('.answer')[i]?.focus();
+    },parent,'answer paper',graded);
+    b.setAttribute('aria-pressed',String(chosen.includes(i)));
+  });
+  if(!graded)btn('확인',()=>{
+    if(matching(chosen,correct))onCorrect();
+    else{feedback=hint||'주민의 이야기와 기록을 떠올려 다시 골라 보세요.';render();game.querySelector('.answer')?.focus();}
+  },game,'',!chosen.length);
+}
+render();
+</script></html>
