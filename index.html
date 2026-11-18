@@ -185,6 +185,10 @@ button{min-height:42px;padding:7px 12px;line-height:1.35}
 .history-pin.north{left:10%;top:19%;bottom:auto}
 .history-pin.south{left:38%;top:83%;bottom:auto}
 
+
+.panel.history-screen .viewport-body{flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important}
+.history-screen .viewport-body>.record{flex:none}
+
 </style>
 <main><header><p>5학년 2학기 사회 · 조선 후기</p><div id="hud" class="bar"></div></header><section id="game" class="panel"></section></main>
 <script>
@@ -467,6 +471,7 @@ function showDocument(card){
 }
 function sizeScenery(){
   game.querySelectorAll('.history').forEach(map=>{
+    game.classList.add('history-screen');
     const parent=map.parentElement;
     const siblings=[...parent.children].filter(e=>e!==map);
     const otherHeight=siblings.reduce((sum,e)=>sum+e.offsetHeight,0)+siblings.length*8;
