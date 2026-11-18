@@ -165,6 +165,13 @@ button{min-height:42px;padding:7px 12px;line-height:1.35}
  .timeline-screen .record{padding:5px 8px;font-size:13px}
 }
 
+
+.ledger{gap:10px;background:#c9ad7d;border-color:#c9ad7d}
+.ledger>section:first-child{background:#f0ead9;border:1px solid #ad9c7c}
+.ledger>section:last-child{background:#fff0c7;border:2px solid #94603a}
+.ledger h4{font-size:17px;color:#53351e}
+.ledger .ledger-guide{font-size:13px;line-height:1.5;color:#5c503f;margin:0 0 10px}
+.ledger .ledger-action{font-size:14px;line-height:1.5;font-weight:bold;margin:0 0 10px;color:#75401c}
 </style>
 <main><header><p>5학년 2학기 사회 · 조선 후기</p><div id="hud" class="bar"></div></header><section id="game" class="panel"></section></main>
 <script>
@@ -193,7 +200,7 @@ quiz:['기준이 쌀 두 자루인데 네 자루를 거뒀다면 어떤 문제�
 {prompt:'저울에 올린 두 양을 비교하고 부당한 점을 모두 표시하세요.',note:'⚖️ 받은 양 두 자루 / 갚을 양 다섯 자루',cards:['주민의 뜻에 어긋나게 곡식을 빌려줌','빌린 곡식보다 세 자루나 더 갚게 함','빌린 만큼만 갚게 함'],correct:[0,1]}],
 quiz:['이 주민이 겪은 일은 무엇인가요?',['곡식을 선물로 받았다','원하는 만큼만 빌렸다','억지로 빌리고 많은 이자를 내게 됐다'],[2],'어려울 때 빌려주는 곡식 제도를 악용해 많은 이자를 받아 냈어요.']},
 {icon:'🧾',place:'군포 징수소',title:'어린아이에게도 군포를?',npc:'마을 기록을 맡은 주민',talk:'군포는 군대에 가는 대신 내는 세금이야. 그런데 우리 집 일곱 살 아이 이름까지 적혀 있어.',steps:[
-{prompt:'군포 명단과 주민 기록을 대조해 잘못 매긴 두 항목을 표시하세요.',note:'주민 기록 · 우물집 만석 7세 / 언덕집 만석 27세, 군포 납부 대상 / 장터집 덕수 작년에 사망',cards:['우물집 만석','언덕집 만석','장터집 덕수'],correct:[0,2],hint:'같은 이름이 있어요. 집과 나이, 살아 있는지를 확인하세요.'}],
+{prompt:'관아의 군포 징수 명단입니다. 주민 정보를 확인하고, 군포를 부당하게 내라고 한 두 사람을 명단에서 고르세요.',note:'주민 기록 · 우물집 만석 7세 / 언덕집 만석 27세, 군포 납부 대상 / 장터집 덕수 작년에 사망',cards:['우물집 만석','언덕집 만석','장터집 덕수'],correct:[0,2],hint:'같은 이름이 있어요. 집과 나이, 살아 있는지를 확인하세요.'}],
 quiz:['부당하게 군포가 매겨진 사람을 모두 고르세요.',['일곱 살 어린이','군포를 내야 하는 성인 남성','작년에 세상을 떠난 사람'],[0,2],'부패한 관리들은 어린아이와 죽은 사람에게까지 군포를 매겼어요.']},
 {icon:'📌',place:'장터',title:'장터에 붙은 방',npc:'장터 주민',talk:'더는 참을 수 없다고 세금 내기를 거부하는 이들도 있어. 우리도 장터 벽에 방을 붙여 뜻을 알리세.',steps:[
 {prompt:'장터 벽에 붙일 방에 실을 근거를 모두 고르세요.',cards:['농사를 못 지은 논에도 세금을 매긴 기록','억지로 곡식을 빌려주고 이자를 더 받은 장부','숨은 보물이 있다는 소문','어린아이에게 군포를 매긴 명단'],correct:[0,1,3]},
@@ -670,10 +677,13 @@ function taskBoard(){
   if(stage===3){
     const ledger=put('div','','ledger');
     const records=put('section','','',ledger);
-    put('h4','주민 기록','',records);
+    put('h4','주민 정보 · 확인 자료','',records);
+    put('p','나이와 생존 여부를 확인하세요.','ledger-guide',records);
     ['우물집 만석 · 7세','언덕집 만석 · 27세, 납부 대상','장터집 덕수 · 작년에 사망'].forEach(value=>put('p',value,'',records));
     const register=put('section','','',ledger);
-    put('h4','군포 명단','',register);
+    put('h4','관아의 군포 징수 명단','',register);
+    put('p','관아가 군포를 내라고 적은 사람들입니다.','ledger-guide',register);
+    put('p','이 명단에서 부당하게 군포를 매긴 두 사람을 고르세요.','ledger-action',register);
     return register;
   }
   if(stage===4&&step>0){
