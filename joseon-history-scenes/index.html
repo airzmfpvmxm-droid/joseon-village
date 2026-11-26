@@ -99,6 +99,8 @@ h1,h2,.book-copy strong,.hero h1{font-family:"Noto Serif KR",Batang,serif}
 @media(min-width:720px) and (orientation:landscape){.split.scene-intro{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr)}}
 @media(orientation:portrait){.split.scene-intro{display:grid;grid-template-columns:1fr}}
 @media(max-width:680px){.chapter-shelf{grid-template-columns:1fr}.quiz-item .quiz-options,.review-card .quiz-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style><style>
+.book-cover>img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.book-copy{gap:.35rem}.volume-1 .book-cover{background:#173d35;color:#fffdf7}.volume-1 .book-copy strong{color:#fffdf7}.cover-question{max-width:33ch;word-break:keep-all}.book-entry{justify-self:start;color:inherit;font-weight:700;padding:.45rem 0}.chapter-book details{margin:0;padding:0}.chapter-book .book-toggle{padding:.7rem 1.4rem;margin:0}.chapter-book details[open] .book-toggle:after{content:' ▴'}.scene-cover.heading{padding:.75rem 1rem}.scene-cover.heading h1{font-size:clamp(1.45rem,3vw,2rem)}.finish-actions{align-items:center}.finish-actions a{margin:0}
 </style></head>
 <body>
 <header><nav aria-label="주 메뉴"><a href="#home"><strong>장면으로 읽는 조선의 마지막 시기</strong></a><span><a href="#chapters">챕터 목록</a><a href="#timeline">시대 흐름</a></span></nav></header>
@@ -112,8 +114,7 @@ const lessons = [
     "topic": "신분제와 어린 유진",
     "title": "유진 초이, 그는 누구인가?",
     "scene": [
-      "1871년, 조선. 한 아이가 어머니 곁에 있습니다.",
-      "위험이 가까워지는 순간, 어머니는 아이에게 무슨 말을 건넬까요? 이 아이가 바로 우리가 따라갈 유진입니다."
+      "1871년 조선, 어린 유진이 어머니 곁에 있습니다. 위험이 다가오자 어머니가 유진에게 말을 건넵니다."
     ],
     "before": [
       [
@@ -125,7 +126,7 @@ const lessons = [
         "조선에서 개인이나 관청에 매여 일하던 신분이에요."
       ]
     ],
-    "watch": "어머니의 말과 표정에서 유진에게 바라는 행동을 찾아봐요.",
+    "watch": "위험이 다가왔을 때 어머니가 누구를 바라보는지 살펴보세요.",
     "real": "조선에는 노비 제도가 있었고, 신분에 따라 대우가 달랐어요.",
     "drama": "유진과 어머니의 이야기는 드라마의 설정이에요.",
     "quiz": "위급한 순간, 어머니는 누구를 살리려 하나요?",
@@ -172,8 +173,7 @@ const lessons = [
     "topic": "어린 유진 · 첫 만남",
     "minutes": 8,
     "scene": [
-      "갈 곳을 잃은 어린 유진 앞에 낯선 어른이 나타납니다.",
-      "유진은 이 사람에게 자신의 처지를 어떻게 이야기할까요? 유진의 말에 귀를 기울여 보세요."
+      "갈 곳을 잃은 유진 앞에 낯선 어른이 나타납니다. 유진은 망설이다가 자신의 이야기를 꺼냅니다."
     ],
     "before": [
       [
@@ -233,8 +233,7 @@ const lessons = [
     "topic": "어린 유진 · 낯선 땅",
     "minutes": 8,
     "scene": [
-      "배를 타고 바다를 건넌 어린 유진 앞에 낯선 땅이 펼쳐집니다.",
-      "이곳은 어디일까요? 유진이 처음 마주하는 사람과 주변 풍경을 살펴보세요."
+      "바다를 건넌 유진 앞에 낯선 땅이 펼쳐집니다. 그곳에서는 누가 유진을 기다리고 있을까요?"
     ],
     "before": [
       [
@@ -295,8 +294,7 @@ const lessons = [
     "topic": "신미양요와 강화도",
     "title": "강화도에서 무슨 일이 일어났을까?",
     "scene": [
-      "강화도 앞바다. 배들이 다가오고, 육지에서는 사람들이 바다를 바라봅니다.",
-      "같은 바닷길을 바라보는 두 편. 배 위와 땅 위에는 각각 누가 있을까요?"
+      "강화도 앞바다에 배들이 다가옵니다. 육지의 사람들은 바닷길을 바라봅니다."
     ],
     "before": [
       [
@@ -331,8 +329,7 @@ const lessons = [
     "topic": "강화도 전투에 참여한 사람들",
     "title": "조선군은 왜 자리를 지키려 했을까?",
     "scene": [
-      "강화도의 전투가 이어집니다. 물러날 수도, 자리를 지킬 수도 있는 순간입니다.",
-      "한 사람이 곁에 있는 이들에게 말을 건넵니다. 그 말에 귀를 기울여 보세요."
+      "강화도에서 전투가 이어집니다. 위험이 다가오자 한 사람이 곁에 있는 이들에게 말을 건넵니다."
     ],
     "before": [
       [
@@ -363,8 +360,7 @@ const lessons = [
     "topic": "흥선대원군과 포로",
     "title": "전투가 끝나면 모두에게 끝일까?",
     "scene": [
-      "전투가 끝난 뒤, 시선은 흥선대원군과 붙잡힌 사람들에게 옮겨 갑니다.",
-      "같은 전투를 겪었지만 저마다 처한 상황은 다릅니다. 흥선대원군은 방금 벌어진 일을 어떻게 이야기할까요?"
+      "전투 뒤 궁궐에서는 싸움의 결과를 두고 이야기를 나눕니다. 붙잡힌 조선군은 어떤 처지에 놓였을까요?"
     ],
     "before": [
       [
@@ -407,8 +403,7 @@ const lessons = [
     "topic": "이완익의 말과 포로의 처지",
     "title": "붙잡힌 사람들은 어떤 마음이었을까?",
     "scene": [
-      "붙잡힌 사람들 앞에 이완익이 나타납니다.",
-      "이완익의 말이 끝난 뒤, 사람들의 얼굴을 살펴보세요. 그들은 무슨 생각을 하고 있을까요?"
+      "붙잡힌 사람들 앞에 이완익이 나타납니다. 사람들은 그의 말을 듣고 어떤 표정을 지을까요?"
     ],
     "before": [
       [
@@ -443,8 +438,7 @@ const lessons = [
     "minutes": 8,
     "title": "오랜 시간이 흘러 다시 조선으로",
     "scene": [
-      "오랜 시간이 흘렀습니다. 우리가 처음 만났던 어린 유진이 이제 어른이 되어 조선으로 향합니다.",
-      "유진의 옷차림과 주변 사람들의 태도를 눈여겨보세요. 그동안 유진에게 어떤 변화가 있었을까요?"
+      "긴 시간이 흘러 어른이 된 유진이 다시 조선으로 향합니다. 어린 시절과 무엇이 달라졌을까요?"
     ],
     "before": [
       [
@@ -516,8 +510,7 @@ const lessons = [
     "topic": "나라를 대하는 두 사람의 태도",
     "minutes": 8,
     "scene": [
-      "고상완이 이완익과 마주합니다. 두 사람이 나라를 대하는 태도에는 어떤 차이가 있을까요?",
-      "고상완이 이완익에게 어떤 말을 건네는지 들어 보세요."
+      "고상완과 이완익이 마주합니다. 나라의 앞날을 두고 두 사람은 어떤 말을 주고받을까요?"
     ],
     "before": [
       [
@@ -611,8 +604,7 @@ const lessons = [
     "topic": "고애신 · 세상 소식",
     "minutes": 8,
     "scene": [
-      "김희진이 동료에게 맡겼던 어린 딸 고애신이 자랐습니다.",
-      "누군가 물건을 펼쳐 보이자, 애신의 시선이 한곳에 머뭅니다. 무엇이 애신의 눈길을 끌었을까요?"
+      "어느덧 자란 애신 앞에 여러 물건이 펼쳐집니다. 애신의 눈길은 어디에 머물까요?"
     ],
     "before": [
       [
@@ -638,13 +630,12 @@ const lessons = [
   {
     "id": "xHsJhUq1N34",
     "ep": "EP1-14",
-    "name": "희성이 받은 시계에는 어떤 사연이 있을까?",
+    "name": "할아버지가 희성에게 건넨 선물은?",
     "title": "할아버지가 건넨 선물",
-    "topic": "김희성 · 집안의 부",
+    "topic": "옷차림과 물건",
     "minutes": 8,
     "scene": [
-      "이번에는 고애신의 이야기에서 김희성의 집으로 시선을 옮겨 봅니다.",
-      "할아버지가 희성이에게 선물을 건넵니다. 할아버지와 희성이가 그 물건을 어떻게 받아들이는지 살펴보세요."
+      "김희성의 집에서 할아버지가 손자에게 선물을 건넵니다. 두 사람에게 그 선물은 어떤 의미일까요?"
     ],
     "before": [
       [
@@ -677,7 +668,7 @@ const lessons = [
         "explain": "김희성은 일본에서 공부하는 유학생이에요. 고종은 1895년 교육의 중요성을 강조했어요. 조선 정부는 교사를 기르는 한성사범학교와 외국어를 가르치는 학교 등을 세우고, 학생들이 외국에서 새로운 지식과 기술을 배우도록 유학을 지원했어요. 이런 교육 정책은 대한제국 시기에도 이어졌어요."
       },
       {
-        "quiz": "이 장면에서 볼 수 있는 조선의 개화 모습이 아닌 것은 무엇인가요?",
+        "quiz": "이 장면에서 볼 수 있는 개화기의 모습이 아닌 것은 무엇인가요?",
         "options": [
           "김희성이 서양식 양복을 입어요.",
           "김희성이 일본으로 유학을 떠나요.",
@@ -685,7 +676,7 @@ const lessons = [
           "김희성이 주머니에 넣고 다니는 시계를 받아요."
         ],
         "correct": 2,
-        "explain": "양복, 해외 유학, 주머니에 넣고 다니는 시계는 당시 새롭게 들어온 옷차림과 물건, 사람들의 생활 변화를 보여 줘요. 김판서가 소작농(남의 땅을 빌려 농사짓는 사람)의 땅을 빼앗는 모습은 힘 있는 지주가 농민을 부당하게 대하는 장면이에요."
+        "explain": "양복, 해외 유학, 회중시계(주머니에 넣고 다니는 시계)는 당시 새롭게 들어온 옷차림과 물건, 사람들의 생활 변화를 보여 줘요. 김판서가 소작농(남의 땅을 빌려 농사짓는 사람)의 땅을 빼앗는 모습은 힘 있는 지주가 농민을 부당하게 대하는 장면이에요."
       }
     ],
     "sourceLabel": "우리역사넷에서 교육 정책 보기"
@@ -757,7 +748,9 @@ function cards() {
   return `<h2>챕터 목록</h2><p>장면 학습 완료 ${done} / ${lessons.length}</p><progress aria-label="완료한 장면 수" value="${done}" max="${lessons.length}"></progress><div class="chapter-shelf">${chapters.map((chapter, ci)=>{
     const scenes = lessons.slice(chapter.start, chapter.end);
     const count = scenes.filter((_, offset)=>records[chapter.start + offset]?.done).length;
-    return `<details class="chapter-book"><summary><img src="${reviewArt[ci][0]}" alt=""><span class="book-copy"><small>챕터 ${ci+1}</small><strong>${chapter.title}</strong><span>${scenes.length}장면 중 ${count}장면 완료</span>${count===scenes.length && reviewFinished(ci)?'<b class="finished-sticker">완성!</b>':''}<span class="book-toggle">장면 목록</span></span></summary><div class="book-scenes">${scenes.map((l,offset)=>`<a href="#lesson-${chapter.start+offset+1}"><small>장면 ${offset+1} · ${l.ep}${records[chapter.start+offset]?.done?' · 완료':''}</small><strong>${l.name}</strong><small>${l.topic} · 약 ${l.minutes}분</small></a>`).join('')}<a href="#review-${ci+1}"><strong>사회 배움 확인</strong><small>복습 3문항</small></a></div></details>`;
+    const next = scenes.findIndex((_, n) => !records[chapter.start+n]?.done);
+    const target = next < 0 ? '#review-'+(ci+1) : '#lesson-'+(chapter.start+next+1);
+    return `<article class="chapter-book volume-${ci+1}"><div class="book-cover"><img src="${ci===0?'https://i.ytimg.com/vi/'+lessons[0].id+'/hqdefault.jpg':reviewArt[1][0]}" alt=""><span class="book-copy"><small>챕터 ${ci+1}</small><strong>${chapter.title}</strong><span>${scenes.length}장면 중 ${count}장면 완료</span>${count===scenes.length && reviewFinished(ci)?'<b class="finished-sticker">완성!</b>':''}<span class="cover-question">${ci===0?'어린 유진 곁에는 누가 있었고, 그 사람들은 유진을 어떻게 대했을까요?':'조선이 문을 연 뒤, 사람들의 옷차림과 생활, 나라를 지키려는 방법은 어떻게 달라졌을까요?'}</span><a class="book-entry" href="${target}">${next<0?'사회 배움 확인':(next+1)+'번째 장면 '+(count || records[chapter.start+next]?'이어하기':'시작하기')} →</a></span></div><details><summary class="book-toggle">장면 목록</summary><div class="book-scenes">${scenes.map((l,offset)=>`<a href="#lesson-${chapter.start+offset+1}"><small>장면 ${offset+1} · ${l.ep}${records[chapter.start+offset]?.done?' · 완료':''}</small><strong>${l.name}</strong><small>${l.topic} · 약 ${l.minutes}분</small></a>`).join('')}<a href="#review-${ci+1}"><strong>사회 배움 확인</strong><small>복습 3문항</small></a></div></details></article>`;
   }).join('')}</div>`;
 }
 function lesson(index) {
@@ -765,16 +758,16 @@ function lesson(index) {
   const ci = chapters.findIndex(chapter => index < chapter.end);
   const chapter = chapters[ci];
   const questions = [l, ...(l.extraQuiz || [])];
-  app.innerHTML = `<div class="heading scene-cover"><a class="scene-chapter" href="#chapters">${chapter.title}</a><p class="badge">챕터 ${ci+1} · 장면 ${index-chapter.start+1} · ${l.topic} · 약 ${l.minutes}분</p><h1 tabindex="-1">${l.name}</h1><p>${l.title}</p></div>
+  app.innerHTML = `<div class="heading scene-cover"><a class="scene-chapter" href="#chapters">${chapter.title}</a><p class="badge">챕터 ${ci+1} · 장면 ${index-chapter.start+1}/${chapter.end-chapter.start} · ${l.topic} · 약 ${l.minutes}분</p><h1 tabindex="-1">${l.name}</h1></div>
   <div class="stack scene-layout"><div class="split scene-intro"><section class="panel" aria-labelledby="before"><h2 id="before">어떤 장면인가요?</h2><div class="narration">${l.scene.map(line=>`<p>${line}</p>`).join("")}</div><h3>보기 전 알아두기</h3><ul>${l.before.map(([key,value])=>`<li><strong>${key}</strong> · ${value}</li>`).join('')}</ul><h3 class="watch-label">이것을 찾아보세요</h3><p>${l.watch}</p></section>
-  <figure class="panel"><figcaption><p class="badge">tvN DRAMA · ${l.ep}</p><h2>${l.title}</h2></figcaption>
+  <figure class="panel"><figcaption><p class="badge">tvN DRAMA · ${l.ep}</p></figcaption>
   ${l.review?`<p>영상에 다음 내용이 나와요. ${l.review}. 교사와 함께 확인하거나 읽을거리로 학습할 수 있어요.</p>`:""}
   <div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a>
   </figure></div>
   <section class="panel"><h2>내용 확인</h2><div class="${l.portrait ? 'quiz-with-portrait' : ''}"><div>${questions.map((q, qi)=>`<div class="quiz-item${q.image ? ' quiz-with-portrait' : ''}" data-quiz="${qi}" role="group" aria-labelledby="question-${qi}"><div><p id="question-${qi}">${questions.length > 1 ? (qi + 1) + '. ' : ''}${q.quiz}</p><div class="quiz-options" style="--option-count:${q.options.length}">${q.options.map((option,i)=>`<button type="button" aria-pressed="false" data-option="${i}">${option}</button>`).join('')}</div><p class="feedback" role="status"></p></div>${q.image ? `<figure class="character-card quiz-scene"><img src="${q.image.src}" alt="${q.image.alt}" width="626" height="470"><figcaption>추노꾼 · tvN 《미스터 션샤인》</figcaption></figure>` : ''}</div>`).join('')}</div>${l.portrait?`<figure class="character-card"><div class="character-image"><img src="${l.portrait.src}" alt="드라마에서 ${l.portrait.name}(으)로 등장하는 인물" loading="lazy"></div><figcaption><strong>${l.portrait.name}</strong><br><small>tvN DRAMA · ${l.ep} 공식 썸네일</small></figcaption></figure>`:''}</div></section>
   <section class="panel"><h2>실제 역사와 드라마</h2><div class="fact"><div><h3>실제 역사</h3><p>${l.real}</p><a href="${l.source}" target="_blank" rel="noopener">${l.sourceLabel || '역사 자료 읽기'}</a></div><div><h3>드라마 속 이야기</h3><p>${l.drama}</p></div></div></section>
-  <section class="panel"><h2><label for="answer">내 생각 쓰기</label></h2><p id="prompt">${l.question}</p><details><summary>문장 시작 도움말</summary><p>“나는 ___ 장면을 보고, 이 인물이 ___하려 했다고 생각했다.” 또는 “나는 ___라고 생각한다. 그 까닭은 ___이다.”</p></details><textarea id="answer" aria-describedby="prompt" placeholder="장면이나 읽을거리에서 찾은 단서 하나를 넣어 써 보세요."></textarea><p id="saved" role="status"></p><button class="primary" id="complete">학습 완료</button></section>
-  <div class="row"><a class="button" href="${index ? '#lesson-'+index : '#chapters'}">${index?'이전 장면':'챕터 목록'}</a><a class="button" href="${index+1===chapter.end?'#review-'+(ci+1):'#lesson-'+(index+2)}">${index+1===chapter.end?'사회 배움 확인':'다음 장면'}</a></div></div>`;
+  <section class="panel"><h2><label for="answer">내 생각 쓰기</label></h2><p id="prompt">${l.question}</p><details><summary>문장 시작 도움말</summary><p>“나는 ___ 장면을 보고, 이 인물이 ___하려 했다고 생각했다.” 또는 “나는 ___라고 생각한다. 그 까닭은 ___이다.”</p></details><textarea id="answer" aria-describedby="prompt" placeholder="장면이나 읽을거리에서 찾은 단서 하나를 넣어 써 보세요."></textarea><p id="saved" role="status"></p><div class="row finish-actions"><button class="primary" id="complete">학습 완료</button><a class="button" href="${index+1===chapter.end?'#review-'+(ci+1):'#lesson-'+(index+2)}">${index+1===chapter.end?'사회 배움 확인':'다음 장면'}</a></div></section>
+  <div class="row"><a class="button" href="${index ? '#lesson-'+index : '#chapters'}">${index?'이전 장면':'챕터 목록'}</a></div></div>`;
   const video = document.querySelector('#video');
   const mount = () => {
     if (video.firstChild) return;
