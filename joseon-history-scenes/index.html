@@ -186,10 +186,10 @@ const lessons = [
       ]
     ],
     "watch": "유진이 자신의 결심을 어떤 말과 행동으로 보여 주는지 살펴봐요.",
-    "real": "조선에서는 머리 모양과 옷차림에 사회와 문화의 관습이 담겨 있었어요.",
+    "real": "조선에서는 유교의 가르침에 따라 머리카락도 부모님에게 물려받은 몸의 일부라고 생각했어요. 그래서 머리카락을 소중히 여기고 함부로 자르지 않았어요.",
     "drama": "유진이 자신의 앞날을 선택하는 모습은 드라마가 만든 이야기예요.",
-    "source": "https://tvn.cjenm.com/ko/mrsunshine/episodes/",
-    "sourceLabel": "tvN 1화 소개 보기",
+    "source": "https://contents.history.go.kr/mobile/kc/view.do?code=kc_age_40&levelId=kc_i401220",
+    "sourceLabel": "우리역사넷 역사 자료 읽기",
     "quiz": "유진은 새로운 삶을 시작하겠다는 결심을 어떤 행동으로 보여 주나요?",
     "options": [
       "조선으로 돌아가는 배에 올라요.",
@@ -302,7 +302,7 @@ const lessons = [
     ],
     "correct": 1,
     "explain": "드라마 속 흥선대원군은 전투의 결과를 조선이 이겼다고 받아들여요.",
-    "question": "전투가 끝났다는 소식을 흥선대원군과 포로가 어떻게 다르게 받아들였을까요?",
+    "question": "흥선대원군은 조선군의 피해가 더 컸는데도 조선이 이긴 싸움이라고 평가합니다. 여러분은 어떻게 생각하나요? 그 이유는 무엇인가요?",
     "review": "전투 직후와 포로를 다루는 장면",
     "source": "https://contents.history.go.kr/mobile/kc/view.do?levelId=kc_i303800",
     "ep": "EP1-5",
@@ -439,7 +439,8 @@ function lesson(index) {
   app.innerHTML = `<div class="heading"><p class="badge">챕터 ${index+1} · ${l.topic} · 약 ${l.minutes}분</p><h1 tabindex="-1">${l.name}</h1><p>${l.title}</p></div>
   <div class="stack"><div class="split"><section class="panel" aria-labelledby="before"><h2 id="before">보기 전 알아두기</h2><h3>어떤 장면인가요?</h3><div class="narration">${l.scene.map(line=>`<p>${line}</p>`).join("")}</div><ul>${l.before.map(([key,value])=>`<li><strong>${key}</strong> · ${value}</li>`).join('')}</ul><h3 style="margin-top:1rem">이것을 찾아보세요</h3><p>${l.watch}</p></section>
   <figure class="panel"><figcaption><p class="badge">tvN DRAMA · ${l.ep}</p><h2>${l.title}</h2></figcaption>
-  ${l.review?`<p>영상에 다음 내용이 나와요. ${l.review}. 교사와 함께 확인하거나 읽을거리로 학습할 수 있어요.</p><details><summary>교사와 함께 영상 열기</summary><div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a></details>`:`<div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a>`}
+  ${l.review?`<p>영상에 다음 내용이 나와요. ${l.review}. 교사와 함께 확인하거나 읽을거리로 학습할 수 있어요.</p>`:""}
+  <div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a>
   </figure></div>
   <section class="panel"><h2>내용 확인</h2><div class="${l.portrait ? 'quiz-with-portrait' : ''}"><div>${questions.map((q, qi)=>`<div class="quiz-item${q.image ? ' quiz-with-portrait' : ''}" data-quiz="${qi}" role="group" aria-labelledby="question-${qi}"><div><p id="question-${qi}">${questions.length > 1 ? (qi + 1) + '. ' : ''}${q.quiz}</p><div class="row">${q.options.map((option,i)=>`<button type="button" aria-pressed="false" data-option="${i}">${option}</button>`).join('')}</div><p class="feedback" role="status"></p></div>${q.image ? `<figure class="character-card quiz-scene"><img src="${q.image.src}" alt="${q.image.alt}" width="626" height="470"><figcaption>추노꾼 · tvN 《미스터 션샤인》</figcaption></figure>` : ''}</div>`).join('')}</div>${l.portrait?`<figure class="character-card"><div class="character-image"><img src="${l.portrait.src}" alt="드라마에서 ${l.portrait.name}(으)로 등장하는 인물" loading="lazy"></div><figcaption><strong>${l.portrait.name}</strong><br><small>tvN DRAMA · ${l.ep} 공식 썸네일</small></figcaption></figure>`:''}</div></section>
   <section class="panel"><h2>실제 역사와 드라마</h2><div class="fact"><div><h3>실제 역사</h3><p>${l.real}</p><a href="${l.source}" target="_blank" rel="noopener">${l.sourceLabel || '역사 자료 읽기'}</a></div><div><h3>드라마 속 이야기</h3><p>${l.drama}</p></div></div></section>
@@ -455,8 +456,7 @@ function lesson(index) {
     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
     video.append(iframe);
   };
-  if (l.review) video.closest('details').addEventListener('toggle',event=>{if(event.currentTarget.open) mount();});
-  else mount();
+  mount();
   document.querySelectorAll('[data-quiz]').forEach((group, qi) => {
     const q = questions[qi];
     const options = [...group.querySelectorAll('[data-option]')];
