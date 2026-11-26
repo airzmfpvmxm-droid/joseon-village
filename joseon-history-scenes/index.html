@@ -39,6 +39,13 @@
 .review-feedback{margin:.7rem 0 0;padding:.65rem .8rem;border-radius:.5rem;background:#fff2d8}
 .review-feedback:empty{display:none}
 .review-feedback[data-correct="true"]{background:#e5f1e6;color:#234f42}
+.review-cover{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:clamp(1rem,3vw,2rem);align-items:center}
+.review-cover-copy{min-width:0}
+.review-art{padding:.45rem;border-radius:.75rem;background:#fff4dc;color:#173849;border:1px solid #d5b983}
+.review-art img{display:block;width:100%;height:clamp(9rem,19vw,15rem);object-fit:contain;border-radius:.4rem;background:#eee2c6}
+.review-art figcaption{padding:.35rem .45rem .1rem;font-size:.875rem}
+.review-art a{color:inherit}
+@media(max-width:680px){.review-cover{grid-template-columns:1fr}.review-art{width:min(100%,26rem)}}
 </style>
 </head>
 <body>
@@ -813,17 +820,32 @@ const reviews = [
     ]
   ]
 ];
+const reviewArt = [
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/0/07/Picture_of_%27Seodang%27_painted_by_Hongdo_Kim%2C_arguably_the_most_prominent_folk_artist_during_the_Joseon_Dynasty_of_Korea.jpg",
+    "김홍도 〈서당〉 · 국립중앙박물관 소장",
+    "https://commons.wikimedia.org/wiki/File:Picture_of_%27Seodang%27_painted_by_Hongdo_Kim,_arguably_the_most_prominent_folk_artist_during_the_Joseon_Dynasty_of_Korea.jpg",
+    "서당에서 아이들이 훈장 앞에 둘러앉은 조선 후기 풍속화"
+  ],
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/5/57/View_of_Downtown_Keij%C5%8D_from_Seoul_City_Wall_around_early_1900s.jpg",
+    "1900년대 초 서울 풍경 · 서울역사박물관 소장",
+    "https://commons.wikimedia.org/wiki/File:View_of_Downtown_Keij%C5%8D_from_Seoul_City_Wall_around_early_1900s.jpg",
+    "서울 성곽에서 바라본 낮은 지붕과 골목이 이어지는 옛 서울"
+  ]
+];
 function chapterReview(index) {
+  const [image, caption, source, alt] = reviewArt[index];
   const items = reviews[index];
   const chapter = chapters[index];
   let picks = [];
   const key = 'joseon-history-review-' + (index + 1);
   try { picks = JSON.parse(localStorage.getItem(key) || '[]') || []; } catch {}
-  app.innerHTML = `<div class="review-layout"><header class="review-cover">
+  app.innerHTML = `<div class="review-layout"><header class="review-cover"><div class="review-cover-copy">
     <p>챕터 ${index + 1} · ${chapter.title}</p><h1 tabindex="-1">사회 배움 확인</h1>
     <p>배운 내용을 떠올리며 알맞은 답을 골라 보세요.</p>
     <div class="review-meter"><progress aria-label="푼 문제 수" value="0" max="${items.length}"></progress><span id="review-progress" role="status"></span></div>
-  </header>
+  </div><figure class="review-art"><img src="${image}" alt="${alt}" decoding="async"><figcaption><a href="${source}" target="_blank" rel="noopener">${caption}</a></figcaption></figure></header>
   ${items.map(([question, options], i) => `<section class="panel review-card" data-review="${i}" aria-labelledby="review-title-${i}">
     <h2 id="review-title-${i}"><span class="review-number">${i+1}</span>${question}</h2>
     <div class="quiz-options" style="--option-count:${options.length}">${options.map((option, j) => `<button type="button" aria-pressed="false" data-choice="${j}"><span>${['①','②','③','④'][j]}</span> ${option}</button>`).join('')}</div>
