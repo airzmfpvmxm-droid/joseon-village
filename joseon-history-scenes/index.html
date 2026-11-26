@@ -110,6 +110,70 @@ const lessons = [
     "question": "처음 만난 어른에게 말을 걸 때 유진은 어떤 마음이었을까요? 말이나 표정에서 단서를 하나 찾아보세요."
   },
   {
+    "id": "VSoWEKhZ-FE",
+    "ep": "EP1-8",
+    "name": "바다를 건넌 유진은 어디에 닿았을까?",
+    "title": "낯선 땅에 첫발을 내딛다",
+    "topic": "어린 유진 · 낯선 땅",
+    "minutes": 8,
+    "scene": [
+      "배를 타고 바다를 건넌 어린 유진 앞에 낯선 땅이 펼쳐집니다.",
+      "이곳은 어디일까요? 유진이 처음 마주하는 사람과 주변 풍경을 살펴보세요."
+    ],
+    "before": [
+      [
+        "바다를 건너는 여행",
+        "당시에는 먼 나라로 갈 때 배를 탔어요. 낯선 곳에 도착하면 말과 생활 방식이 다를 수 있었어요."
+      ]
+    ],
+    "watch": "유진이 낯선 사람을 만났을 때 어떤 표정과 태도를 보이는지 살펴봐요.",
+    "real": "19세기에는 대양을 건너 먼 나라를 오갈 때 배를 이용했어요.",
+    "drama": "유진이 배를 타고 바다를 건너 낯선 곳에서 사람을 만난 이야기는 드라마 속 설정이에요.",
+    "source": "https://tvn.cjenm.com/ko/mrsunshine/episodes/",
+    "sourceLabel": "tvN 1화 소개 보기",
+    "quiz": "바다를 건넌 유진이 도착한 나라는 어디인가요?",
+    "options": [
+      "일본",
+      "프랑스",
+      "미국"
+    ],
+    "correct": 2,
+    "explain": "영상에서 어린 유진은 바다를 건너 미국에 도착해요.",
+    "question": "처음 보는 곳에 도착한 유진은 어떤 마음이었을까요? 표정이나 행동에서 근거를 찾아 써 보세요."
+  },
+  {
+    "id": "gWPGPhk89aQ",
+    "ep": "EP1-9",
+    "name": "유진은 어떤 새 삶을 꿈꿨을까?",
+    "title": "낯선 땅에서 내린 결심",
+    "topic": "유진의 선택 · 새로운 시작",
+    "minutes": 8,
+    "scene": [
+      "낯선 땅에서 지내던 유진에게 스스로 앞날을 정할 순간이 찾아옵니다.",
+      "유진이 어떤 행동으로 자신의 결심을 보여 주는지 눈여겨보세요."
+    ],
+    "before": [
+      [
+        "새로운 삶",
+        "다른 나라에서 살게 되면 익숙한 생활과 새로 배우는 생활 사이에서 여러 선택을 하게 돼요."
+      ]
+    ],
+    "watch": "유진이 자신의 결심을 어떤 말과 행동으로 보여 주는지 살펴봐요.",
+    "real": "조선에서는 머리 모양과 옷차림에 사회와 문화의 관습이 담겨 있었어요.",
+    "drama": "유진이 자신의 앞날을 선택하는 모습은 드라마가 만든 이야기예요.",
+    "source": "https://tvn.cjenm.com/ko/mrsunshine/episodes/",
+    "sourceLabel": "tvN 1화 소개 보기",
+    "quiz": "유진은 새로운 삶을 시작하겠다는 결심을 어떤 행동으로 보여 주나요?",
+    "options": [
+      "조선으로 돌아가는 배에 올라요.",
+      "머리카락을 잘라요.",
+      "새 신발을 선물해요."
+    ],
+    "correct": 1,
+    "explain": "유진은 머리카락을 자르며 미국에서 새로운 삶을 시작하겠다는 결심을 보여 줘요.",
+    "question": "유진은 왜 그 행동으로 자신의 결심을 보여 주었을까요? 장면에서 느낀 점을 써 보세요."
+  },
+  {
     "id": "sb9ZGrfX02E",
     "name": "강화도에서 무슨 일이 일어났을까?",
     "topic": "신미양요와 강화도",
@@ -295,13 +359,21 @@ const lessons = [
 ];
 </script>
 <script>const app = document.querySelector('#app');
-const storageKey = 'joseon-history-scenes-seven';
+const storageKey = 'joseon-history-scenes-nine';
 let records = {};
 try {
   const saved = localStorage.getItem(storageKey);
   const six = localStorage.getItem('joseon-history-scenes-chronological');
+  const seven = localStorage.getItem('joseon-history-scenes-seven');
   if (saved) records = JSON.parse(saved) || {};
-  else if (six) {
+  else if (seven) {
+    const previous = JSON.parse(seven) || {};
+    const previousOrder = ["EP1-2","EP1-7","EP1-3","EP1-4","EP1-5","EP1-6","EP1-1"];
+    lessons.forEach((lesson, index) => {
+      const oldIndex = previousOrder.indexOf(lesson.ep);
+      if (oldIndex !== -1 && previous[oldIndex]) records[index] = previous[oldIndex];
+    });
+  } else if (six) {
     const previous = JSON.parse(six) || {};
     const previousOrder = ["EP1-2","EP1-3","EP1-4","EP1-5","EP1-6","EP1-1"];
     lessons.forEach((lesson, index) => {
@@ -324,7 +396,7 @@ function update(index, patch) {
 }
 const url = id => 'https://www.youtube.com/watch?v=' + id;
 const timeline = [
-  ['1871','신미양요','미국군이 강화도를 공격하고 조선군이 맞섰어요.',3],
+  ['1871','신미양요','미국군이 강화도를 공격하고 조선군이 맞섰어요.',5],
   ['1876','강화도 조약','일본의 압박 속에서 조선은 조약을 맺고 항구를 열었어요.'],
   ['1897','대한제국 선포','고종이 대한제국을 선포하고 황제가 되었어요.'],
   ['1905','을사늑약','일본이 조약을 강요해 대한제국의 외교권을 빼앗았어요.']
@@ -343,7 +415,7 @@ function lesson(index) {
   ${l.review?`<p>영상에 다음 내용이 나와요. ${l.review}. 교사와 함께 확인하거나 읽을거리로 학습할 수 있어요.</p><details><summary>교사와 함께 영상 열기</summary><div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a></details>`:`<div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a>`}
   </figure></div>
   <section class="panel"><h2>내용 확인</h2><div class="${l.portrait ? 'quiz-with-portrait' : ''}"><div>${questions.map((q, qi)=>`<div class="quiz-item" data-quiz="${qi}" role="group" aria-labelledby="question-${qi}"><p id="question-${qi}">${questions.length > 1 ? (qi + 1) + '. ' : ''}${q.quiz}</p><div class="row">${q.options.map((option,i)=>`<button type="button" aria-pressed="false" data-option="${i}">${option}</button>`).join('')}</div><p class="feedback" role="status"></p></div>`).join('')}</div>${l.portrait?`<figure class="character-card"><div class="character-image"><img src="${l.portrait.src}" alt="드라마에서 ${l.portrait.name}(으)로 등장하는 인물" loading="lazy"></div><figcaption><strong>${l.portrait.name}</strong><br><small>tvN DRAMA · ${l.ep} 공식 썸네일</small></figcaption></figure>`:''}</div></section>
-  <section class="panel"><h2>실제 역사와 드라마</h2><div class="fact"><div><h3>실제 역사</h3><p>${l.real}</p><a href="${l.source}" target="_blank" rel="noopener">역사 자료 읽기</a></div><div><h3>드라마 속 이야기</h3><p>${l.drama}</p></div></div></section>
+  <section class="panel"><h2>실제 역사와 드라마</h2><div class="fact"><div><h3>실제 역사</h3><p>${l.real}</p><a href="${l.source}" target="_blank" rel="noopener">${l.sourceLabel || '역사 자료 읽기'}</a></div><div><h3>드라마 속 이야기</h3><p>${l.drama}</p></div></div></section>
   <section class="panel"><h2><label for="answer">내 생각 쓰기</label></h2><p id="prompt">${l.question}</p><details><summary>문장 시작 도움말</summary><p>“나는 ___ 장면을 보고, 이 인물이 ___하려 했다고 생각했다.” 또는 “나는 ___라고 생각한다. 그 까닭은 ___이다.”</p></details><textarea id="answer" aria-describedby="prompt" placeholder="장면이나 읽을거리에서 찾은 단서 하나를 넣어 써 보세요."></textarea><p id="saved" role="status"></p><button class="primary" id="complete">학습 완료</button></section>
   <div class="row"><a class="button" href="${index ? '#lesson-'+index : '#chapters'}">${index?'이전 챕터':'챕터 목록'}</a><a class="button" href="${index+1<lessons.length?'#lesson-'+(index+2):'#chapters'}">${index+1<lessons.length?'다음 챕터':'챕터 목록으로'}</a></div></div>`;
   const video = document.querySelector('#video');
@@ -387,7 +459,7 @@ function lesson(index) {
 }
 function render() {
   const route = location.hash.slice(1);
-  const match = /^lesson-([1-7])$/.exec(route);
+  const match = /^lesson-([1-9])$/.exec(route);
   if (match) lesson(Number(match[1])-1);
   else if (route==='timeline') app.innerHTML = `<section class="panel"><h1 tabindex="-1">시대 흐름</h1><ol class="timeline">${timeline.map(([year,event,desc,index])=>`<li><strong>${year}년 · ${event}</strong><p>${desc}</p>${index ? `<a href="#lesson-${index}">관련 챕터 열기</a>` : ""}</li>`).join('')}</ol></section>`;
   else if (route==='teacher') app.innerHTML = `<section class="panel"><h1 tabindex="-1">교사용 영상 검토</h1><h2>챕터 제작 원칙</h2><ul><li><strong>보기 전</strong>에는 시대 배경과 어려운 낱말, 관찰할 단서를 안내합니다. 장면 소개나 관찰 안내에서 내용 확인의 정답을 먼저 밝히지 않습니다.</li><li><strong>보기 후</strong>에는 영상 속 말, 행동, 옷차림 등 학생이 직접 보고 들은 사실을 묻습니다. 해설에서는 답의 근거를 짚어 줍니다.</li><li>챕터는 이야기 속 시간 순서로 배열하고, 영상에는 공식 클립 번호를 표시합니다.</li></ul><p>공식 업로드와 회차를 확인한 영상입니다. 학생에게 공유하기 전에 실제 재생 환경에서 장면 전체 및 학교 기기 재생을 확인해 주세요.</p><ul>${lessons.map(l=>`<li><a href="${url(l.id)}" target="_blank" rel="noopener">${l.ep} · ${l.title}</a> — ${l.review?'교사 동반 권장 · '+l.review:'장면 전체와 재생 가능 여부 확인 필요'}</li>`).join('')}</ul></section>`;
