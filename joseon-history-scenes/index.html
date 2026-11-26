@@ -75,6 +75,41 @@ const lessons = [
     ]
   },
   {
+    "id": "ToIJj2GPUW0",
+    "ep": "EP1-7",
+    "name": "갈 곳 없는 유진은 누구를 만날까?",
+    "title": "어린 유진이 만난 낯선 어른",
+    "topic": "어린 유진 · 첫 만남",
+    "minutes": 8,
+    "scene": [
+      "갈 곳을 잃은 어린 유진 앞에 낯선 어른이 나타납니다.",
+      "유진은 이 사람에게 자신의 처지를 어떻게 이야기할까요? 유진의 말에 귀를 기울여 보세요."
+    ],
+    "before": [
+      [
+        "앞 장면 떠올리기",
+        "유진의 어머니는 위험에 처한 아들을 살리려 했어요. 이번 장면에서는 그 뒤 어린 유진이 어떤 사람을 만나는지 살펴봐요."
+      ],
+      [
+        "신분제",
+        "조선에는 신분에 따라 할 수 있는 일이나 받는 대우가 달라지는 제도가 있었어요."
+      ]
+    ],
+    "watch": "유진이 처음 만난 어른에게 건네는 말과 그 말을 할 때의 표정을 살펴봐요.",
+    "real": "조선에는 신분제가 있었어요. 신분에 따라 사회에서 받는 대우가 달랐어요.",
+    "drama": "어린 유진이 낯선 어른을 만나는 이야기는 드라마 속 설정이에요.",
+    "source": "https://contents.history.go.kr/mobile/ta/view.do?levelId=ta_h51_0060_0030_0010",
+    "quiz": "유진은 처음 만난 어른에게 자신의 처지를 어떻게 말하나요?",
+    "options": [
+      "가족이 기다리고 있다고 말해요.",
+      "갈 곳이 없다고 말해요.",
+      "친구를 만나러 간다고 말해요."
+    ],
+    "correct": 1,
+    "explain": "유진은 처음 만난 어른에게 갈 곳이 없다고 말해요.",
+    "question": "처음 만난 어른에게 말을 걸 때 유진은 어떤 마음이었을까요? 말이나 표정에서 단서를 하나 찾아보세요."
+  },
+  {
     "id": "sb9ZGrfX02E",
     "name": "강화도에서 무슨 일이 일어났을까?",
     "topic": "신미양요와 강화도",
@@ -260,18 +295,26 @@ const lessons = [
 ];
 </script>
 <script>const app = document.querySelector('#app');
-const storageKey = 'joseon-history-scenes-chronological';
+const storageKey = 'joseon-history-scenes-seven';
 let records = {};
 try {
   const saved = localStorage.getItem(storageKey);
+  const six = localStorage.getItem('joseon-history-scenes-chronological');
   if (saved) records = JSON.parse(saved) || {};
-  else {
+  else if (six) {
+    const previous = JSON.parse(six) || {};
+    const previousOrder = ["EP1-2","EP1-3","EP1-4","EP1-5","EP1-6","EP1-1"];
+    lessons.forEach((lesson, index) => {
+      const oldIndex = previousOrder.indexOf(lesson.ep);
+      if (oldIndex !== -1 && previous[oldIndex]) records[index] = previous[oldIndex];
+    });
+  } else {
     const previous = JSON.parse(localStorage.getItem('joseon-history-scenes-ep1') || '{}') || {};
     const original = JSON.parse(localStorage.getItem('joseon-history-scenes-v1') || '{}') || {};
     lessons.forEach((lesson, index) => {
       const clipIndex = Number(lesson.ep.split('-')[1]) - 1;
       const old = previous[clipIndex] || (clipIndex === 0 ? original[0] : undefined);
-      if (old) records[index] = {answer:old.answer, done:old.done};
+      if (clipIndex < 6 && old) records[index] = {answer:old.answer, done:old.done};
     });
   }
 } catch {}
@@ -281,7 +324,7 @@ function update(index, patch) {
 }
 const url = id => 'https://www.youtube.com/watch?v=' + id;
 const timeline = [
-  ['1871','신미양요','미국군이 강화도를 공격하고 조선군이 맞섰어요.',2],
+  ['1871','신미양요','미국군이 강화도를 공격하고 조선군이 맞섰어요.',3],
   ['1876','강화도 조약','일본의 압박 속에서 조선은 조약을 맺고 항구를 열었어요.'],
   ['1897','대한제국 선포','고종이 대한제국을 선포하고 황제가 되었어요.'],
   ['1905','을사늑약','일본이 조약을 강요해 대한제국의 외교권을 빼앗았어요.']
@@ -344,7 +387,7 @@ function lesson(index) {
 }
 function render() {
   const route = location.hash.slice(1);
-  const match = /^lesson-([1-6])$/.exec(route);
+  const match = /^lesson-([1-7])$/.exec(route);
   if (match) lesson(Number(match[1])-1);
   else if (route==='timeline') app.innerHTML = `<section class="panel"><h1 tabindex="-1">시대 흐름</h1><ol class="timeline">${timeline.map(([year,event,desc,index])=>`<li><strong>${year}년 · ${event}</strong><p>${desc}</p>${index ? `<a href="#lesson-${index}">관련 챕터 열기</a>` : ""}</li>`).join('')}</ol></section>`;
   else if (route==='teacher') app.innerHTML = `<section class="panel"><h1 tabindex="-1">교사용 영상 검토</h1><h2>챕터 제작 원칙</h2><ul><li><strong>보기 전</strong>에는 시대 배경과 어려운 낱말, 관찰할 단서를 안내합니다. 장면 소개나 관찰 안내에서 내용 확인의 정답을 먼저 밝히지 않습니다.</li><li><strong>보기 후</strong>에는 영상 속 말, 행동, 옷차림 등 학생이 직접 보고 들은 사실을 묻습니다. 해설에서는 답의 근거를 짚어 줍니다.</li><li>챕터는 이야기 속 시간 순서로 배열하고, 영상에는 공식 클립 번호를 표시합니다.</li></ul><p>공식 업로드와 회차를 확인한 영상입니다. 학생에게 공유하기 전에 실제 재생 환경에서 장면 전체 및 학교 기기 재생을 확인해 주세요.</p><ul>${lessons.map(l=>`<li><a href="${url(l.id)}" target="_blank" rel="noopener">${l.ep} · ${l.title}</a> — ${l.review?'교사 동반 권장 · '+l.review:'장면 전체와 재생 가능 여부 확인 필요'}</li>`).join('')}</ul></section>`;
