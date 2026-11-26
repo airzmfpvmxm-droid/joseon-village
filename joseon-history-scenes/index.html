@@ -46,6 +46,43 @@
 .review-art figcaption{padding:.35rem .45rem .1rem;font-size:.875rem}
 .review-art a{color:inherit}
 @media(max-width:680px){.review-cover{grid-template-columns:1fr}.review-art{width:min(100%,26rem)}}
+
+:root{--ink:#243a35;--paper:#f3eddf;--card:#fffaf0;--line:#dcd0b8;--green:#24594c;--gold:#d5af72;--red:#913e31}
+body{background:radial-gradient(ellipse at top,#fcf8ed 0%,transparent 55%),var(--paper)}
+body>header{background:#fffaf0;border-top:4px solid var(--red);border-bottom:1px solid var(--line)}
+body>header nav>a{color:var(--ink);text-decoration:none}
+nav span a{padding:.2rem .55rem;border-radius:.35rem}nav span a:hover{background:#efe5d2}
+h1{font-family:"Noto Serif KR","Nanum Myeongjo","Batang",serif;word-break:keep-all}
+h2,h3,h4{word-break:keep-all}
+main{padding-block:clamp(1.1rem,3vw,2rem)}
+.hero,.review-cover{background:#173d35;border:1px solid #31594a;border-bottom:4px solid var(--gold);box-shadow:0 .65rem 1.65rem #243a3520}
+.hero{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);align-items:center;gap:clamp(1.1rem,4vw,3rem)}
+.hero .stamp{color:#fae2b2}
+.hero .button{margin-top:.55rem}
+.hero-art,.review-art{background:#f7edda;padding:.45rem;border:1px solid #d5b983;border-radius:.75rem;overflow:hidden}
+.hero-art img,.review-art img{display:block;width:100%;height:clamp(12rem,26vw,22rem);object-fit:contain;background:#ece0c8;border-radius:.4rem}
+.review-art img{height:clamp(9rem,19vw,15rem)}
+.hero-art figcaption,.review-art figcaption{padding:.4rem .45rem .1rem;font-size:.875rem;color:var(--ink)}
+.hero-art figcaption a{background:none;color:inherit}
+.chapter-group{padding:clamp(.85rem,2.8vw,1.45rem);border:1px solid var(--line);border-radius:1rem;background:#eee5d3}
+.chapter-bar{padding-bottom:.7rem;border-bottom:1px solid #d9c8a8}
+.chapter-bar h3{margin:0}
+.card,.panel{box-shadow:0 .25rem .65rem #3e35220a}
+.card:hover{border-color:#a58c5c}
+.card .button,.chapter-bar .button{background:#f5efde}
+.scene-cover{padding:clamp(1rem,3.6vw,2.2rem);border:1px solid var(--line);border-inline-start:5px solid var(--red);border-radius:.7rem;background:#fcf4e3;margin:0 0 1rem}
+.scene-cover h1{margin:.35rem 0}
+.scene-cover p:last-child{margin-bottom:0}
+.scene-chapter{display:inline-block;margin-bottom:.45rem;font-weight:700}
+.scene-intro>section{border-top:3px solid #a37e4d}
+.scene-intro>figure{border-top:3px solid #2d6253}
+.narration{background:#f4ead7;padding:.6rem .8rem;border-radius:.25rem}
+.quiz-options button{background:#fffdf5}
+.quiz-options button:hover{border-color:var(--green);background:#f3f3e3}
+.quiz-options button[aria-pressed=true]{background:#dceade;border-color:var(--green)}
+.review-number{background:#ead8b8;color:#653a27}
+footer{background:#efe7d6}
+@media(max-width:680px){.hero{grid-template-columns:1fr;padding:1.2rem}.hero-art{width:min(100%,26rem)}.hero-art img{height:12rem}.scene-cover h1{font-size:1.85rem}}
 </style>
 </head>
 <body>
@@ -700,8 +737,8 @@ function lesson(index) {
   const ci = chapters.findIndex(chapter => index < chapter.end);
   const chapter = chapters[ci];
   const questions = [l, ...(l.extraQuiz || [])];
-  app.innerHTML = `<div class="heading"><p class="badge">챕터 ${ci+1} · 장면 ${index-chapter.start+1} · ${l.topic} · 약 ${l.minutes}분</p><h1 tabindex="-1">${l.name}</h1><p>${l.title}</p></div>
-  <div class="stack"><div class="split"><section class="panel" aria-labelledby="before"><h2 id="before">보기 전 알아두기</h2><h3>어떤 장면인가요?</h3><div class="narration">${l.scene.map(line=>`<p>${line}</p>`).join("")}</div><ul>${l.before.map(([key,value])=>`<li><strong>${key}</strong> · ${value}</li>`).join('')}</ul><h3 style="margin-top:1rem">이것을 찾아보세요</h3><p>${l.watch}</p></section>
+  app.innerHTML = `<div class="heading scene-cover"><a class="scene-chapter" href="#chapters">${chapter.title}</a><p class="badge">챕터 ${ci+1} · 장면 ${index-chapter.start+1} · ${l.topic} · 약 ${l.minutes}분</p><h1 tabindex="-1">${l.name}</h1><p>${l.title}</p></div>
+  <div class="stack scene-layout"><div class="split scene-intro"><section class="panel" aria-labelledby="before"><h2 id="before">보기 전 알아두기</h2><h3>어떤 장면인가요?</h3><div class="narration">${l.scene.map(line=>`<p>${line}</p>`).join("")}</div><ul>${l.before.map(([key,value])=>`<li><strong>${key}</strong> · ${value}</li>`).join('')}</ul><h3 style="margin-top:1rem">이것을 찾아보세요</h3><p>${l.watch}</p></section>
   <figure class="panel"><figcaption><p class="badge">tvN DRAMA · ${l.ep}</p><h2>${l.title}</h2></figcaption>
   ${l.review?`<p>영상에 다음 내용이 나와요. ${l.review}. 교사와 함께 확인하거나 읽을거리로 학습할 수 있어요.</p>`:""}
   <div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a>
@@ -885,7 +922,7 @@ function render() {
   else if (match && Number(match[1]) >= 1 && Number(match[1]) <= lessons.length) lesson(Number(match[1])-1);
   else if (route==='timeline') app.innerHTML = `<section class="panel"><h1 tabindex="-1">시대 흐름</h1><ol class="timeline">${timeline.map(([year,event,desc,index])=>`<li><strong>${year}년 · ${event}</strong><p>${desc}</p>${index ? `<a href="#lesson-${index}">관련 장면 열기</a>` : ""}</li>`).join('')}</ol></section>`;
   else if (route==='teacher') app.innerHTML = `<section class="panel"><h1 tabindex="-1">교사용 영상 검토</h1><h2>챕터 제작 원칙</h2><ul><li><strong>보기 전</strong>에는 시대 배경과 어려운 낱말, 관찰할 단서를 안내합니다. 장면 소개나 관찰 안내에서 내용 확인의 정답을 먼저 밝히지 않습니다.</li><li><strong>보기 후</strong>에는 영상 속 말, 행동, 옷차림 등 학생이 직접 보고 들은 사실을 묻습니다. 해설에서는 답의 근거를 짚어 줍니다.</li><li>챕터는 이야기 속 시간 순서로 배열하고, 영상에는 공식 클립 번호를 표시합니다.</li></ul><p>공식 업로드와 회차를 확인한 영상입니다. 학생에게 공유하기 전에 실제 재생 환경에서 장면 전체 및 학교 기기 재생을 확인해 주세요.</p><ul>${lessons.map(l=>`<li><a href="${url(l.id)}" target="_blank" rel="noopener">${l.ep} · ${l.title}</a> — ${l.review?'교사 동반 권장 · '+l.review:'장면 전체와 재생 가능 여부 확인 필요'}</li>`).join('')}</ul></section>`;
-  else app.innerHTML = `<section class="hero"><p class="stamp">초등 사회 · 자기주도 역사 탐구</p><h1 tabindex="-1">유진 초이,<br>그는 누구인가?</h1><p>1871년 조선, 한 소년의 이야기가 시작됩니다. 어린 유진을 따라 그날의 조선으로 들어가 볼까요?</p><p>영상을 보기 전에 그 시대를 먼저 만나 보세요. 배경을 알고 보면 인물의 말과 행동이 다르게 보입니다.</p><a class="button" href="#lesson-${(lessons.findIndex((_,i)=>!records[i]?.done)+1)||1}">학습 시작</a></section><section class="heading" id="chapters" tabindex="-1">${cards()}</section>`;
+  else app.innerHTML = `<section class="hero"><div class="hero-copy"><p class="stamp">초등 사회 · 자기주도 역사 탐구</p><h1 tabindex="-1">유진 초이,<br>그는 누구인가?</h1><p>1871년 조선, 한 소년의 이야기가 시작됩니다. 어린 유진을 따라 그날의 조선으로 들어가 볼까요?</p><p>영상을 보기 전에 그 시대를 먼저 만나 보세요. 배경을 알고 보면 인물의 말과 행동이 다르게 보입니다.</p><a class="button" href="#lesson-${(lessons.findIndex((_,i)=>!records[i]?.done)+1)||1}">학습 시작</a></div><figure class="hero-art"><img src="${reviewArt[0][0]}" alt="${reviewArt[0][3]}" decoding="async"><figcaption><a href="${reviewArt[0][2]}" target="_blank" rel="noopener">${reviewArt[0][1]}</a></figcaption></figure></section><section class="heading" id="chapters" tabindex="-1">${cards()}</section>`;
   const focus = route==='chapters'? document.querySelector('#chapters'):app.querySelector('h1');
   if(route) focus?.focus({preventScroll:true});
   if(route==='chapters') focus?.scrollIntoView(); else window.scrollTo(0,0);
