@@ -25,6 +25,20 @@
 @media (max-width: 600px) {
   .quiz-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+.chapter-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.review-layout{max-width:66rem;margin:auto;display:grid;gap:1rem}
+.review-cover{padding:clamp(1.25rem,4vw,3rem);border-radius:1rem;background:#173849;color:#fff7e8;border-bottom:4px solid #b89257}
+.review-cover h1{margin:.3rem 0 .7rem}
+.review-cover p{margin:0;color:inherit}
+.review-meter{display:flex;align-items:center;flex-wrap:wrap;gap:.7rem;margin-top:1rem}
+.review-meter progress{accent-color:#efca87}
+.review-card h2{display:flex;align-items:center;gap:.7rem;font-size:clamp(1.05rem,2.2vw,1.3rem);margin:0 0 .8rem}
+.review-number{display:inline-grid;place-items:center;flex:0 0 2rem;height:2rem;border-radius:50%;background:#e8d7b5;color:#173849}
+.review-card button{text-align:left}
+.review-card button span{color:var(--green)}
+.review-feedback{margin:.7rem 0 0;padding:.65rem .8rem;border-radius:.5rem;background:#fff2d8}
+.review-feedback:empty{display:none}
+.review-feedback[data-correct="true"]{background:#e5f1e6;color:#234f42}
 </style>
 </head>
 <body>
@@ -669,7 +683,7 @@ const chapters = [
 function cards() {
   const done = lessons.filter((_, i) => records[i]?.done).length;
   return `<h2>챕터 목록</h2><p>장면 학습 완료 ${done} / ${lessons.length}</p><progress aria-label="완료한 장면 수" value="${done}" max="${lessons.length}"></progress>${chapters.map((chapter, ci)=>`
-    <section class="chapter-group" id="chapter-${ci+1}" tabindex="-1"><h3>챕터 ${ci+1}. ${chapter.title}</h3><div class="cards">${lessons.slice(chapter.start,chapter.end).map((l, offset)=>{
+    <section class="chapter-group" id="chapter-${ci+1}" tabindex="-1"><div class="chapter-bar"><h3>챕터 ${ci+1}. ${chapter.title}</h3><a class="button" href="#review-${ci+1}">사회 배움 확인</a></div><div class="cards">${lessons.slice(chapter.start,chapter.end).map((l, offset)=>{
       const i = chapter.start + offset;
       return `<article class="card"><div><p class="badge">장면 ${offset+1} · ${l.ep}${records[i]?.done?' · 완료':''}</p><h4>${l.name}</h4><p class="muted">${l.topic} · 약 ${l.minutes}분</p></div><a class="button" aria-label="${l.name} 열기" href="#lesson-${i+1}">학습하기</a></article>`;
     }).join('')}</div></section>`).join('')}`;
@@ -688,7 +702,7 @@ function lesson(index) {
   <section class="panel"><h2>내용 확인</h2><div class="${l.portrait ? 'quiz-with-portrait' : ''}"><div>${questions.map((q, qi)=>`<div class="quiz-item${q.image ? ' quiz-with-portrait' : ''}" data-quiz="${qi}" role="group" aria-labelledby="question-${qi}"><div><p id="question-${qi}">${questions.length > 1 ? (qi + 1) + '. ' : ''}${q.quiz}</p><div class="quiz-options" style="--option-count:${q.options.length}">${q.options.map((option,i)=>`<button type="button" aria-pressed="false" data-option="${i}">${option}</button>`).join('')}</div><p class="feedback" role="status"></p></div>${q.image ? `<figure class="character-card quiz-scene"><img src="${q.image.src}" alt="${q.image.alt}" width="626" height="470"><figcaption>추노꾼 · tvN 《미스터 션샤인》</figcaption></figure>` : ''}</div>`).join('')}</div>${l.portrait?`<figure class="character-card"><div class="character-image"><img src="${l.portrait.src}" alt="드라마에서 ${l.portrait.name}(으)로 등장하는 인물" loading="lazy"></div><figcaption><strong>${l.portrait.name}</strong><br><small>tvN DRAMA · ${l.ep} 공식 썸네일</small></figcaption></figure>`:''}</div></section>
   <section class="panel"><h2>실제 역사와 드라마</h2><div class="fact"><div><h3>실제 역사</h3><p>${l.real}</p><a href="${l.source}" target="_blank" rel="noopener">${l.sourceLabel || '역사 자료 읽기'}</a></div><div><h3>드라마 속 이야기</h3><p>${l.drama}</p></div></div></section>
   <section class="panel"><h2><label for="answer">내 생각 쓰기</label></h2><p id="prompt">${l.question}</p><details><summary>문장 시작 도움말</summary><p>“나는 ___ 장면을 보고, 이 인물이 ___하려 했다고 생각했다.” 또는 “나는 ___라고 생각한다. 그 까닭은 ___이다.”</p></details><textarea id="answer" aria-describedby="prompt" placeholder="장면이나 읽을거리에서 찾은 단서 하나를 넣어 써 보세요."></textarea><p id="saved" role="status"></p><button class="primary" id="complete">학습 완료</button></section>
-  <div class="row"><a class="button" href="${index ? '#lesson-'+index : '#chapters'}">${index?'이전 장면':'챕터 목록'}</a><a class="button" href="${index+1<lessons.length?'#lesson-'+(index+2):'#chapters'}">${index+1<lessons.length?'다음 장면':'챕터 목록으로'}</a></div></div>`;
+  <div class="row"><a class="button" href="${index ? '#lesson-'+index : '#chapters'}">${index?'이전 장면':'챕터 목록'}</a><a class="button" href="${index+1===chapter.end?'#review-'+(ci+1):'#lesson-'+(index+2)}">${index+1===chapter.end?'사회 배움 확인':'다음 장면'}</a></div></div>`;
   const video = document.querySelector('#video');
   const mount = () => {
     if (video.firstChild) return;
@@ -727,10 +741,126 @@ function lesson(index) {
     status.textContent = saved?'완료 표시와 내 생각을 이 브라우저에 저장했어요.':'이 브라우저에서 저장을 사용할 수 없어요.';
   };
 }
+const reviews = [
+  [
+    [
+      "조선의 신분제는 사람들의 생활에 어떤 영향을 주었나요?",
+      [
+        "나이가 같으면 같은 대우를 받았어요.",
+        "신분에 따라 할 수 있는 일과 받는 대우가 달랐어요.",
+        "사는 곳을 옮기면 누구나 신분을 바꿀 수 있었어요.",
+        "누구나 하고 싶은 일을 자유롭게 고를 수 있었어요."
+      ],
+      1,
+      "조선에서는 신분에 따라 맡을 수 있는 일과 사회에서 받는 대우가 달랐어요."
+    ],
+    [
+      "유교의 가르침을 따르던 조선 사람들은 왜 머리카락을 함부로 자르지 않았나요?",
+      [
+        "머리카락의 길이로 나이를 알 수 있었기 때문이에요.",
+        "머리를 자르려면 나라의 허락을 받아야 했기 때문이에요.",
+        "머리카락도 부모님에게 물려받은 몸의 일부라고 생각했기 때문이에요.",
+        "머리카락을 길러야 글을 배울 수 있었기 때문이에요."
+      ],
+      2,
+      "머리카락도 부모님에게 물려받은 몸의 일부로 여겨 소중히 했어요."
+    ],
+    [
+      "1871년 신미양요 때 강화도에서는 어떤 일이 있었나요?",
+      [
+        "미국군이 강화도의 군사 시설을 공격하자 조선군이 맞섰어요.",
+        "일본군이 강화도를 공격하자 미국군이 조선군을 도왔어요.",
+        "조선과 미국이 강화도에서 통상 조약을 맺었어요.",
+        "조선과 일본이 강화도에서 함께 항구를 지켰어요."
+      ],
+      0,
+      "1871년 미국군이 강화도의 군사 시설을 공격하자 조선군이 맞섰어요."
+    ]
+  ],
+  [
+    [
+      "1876년 강화도 조약을 맺은 뒤 조선에는 어떤 변화가 있었나요?",
+      [
+        "미국과 맺은 조약에 따라 모든 항구를 열었어요.",
+        "일본과의 무역을 막기 위해 항구를 닫았어요.",
+        "조선의 수도를 한성에서 강화도로 옮겼어요.",
+        "일본에 항구를 차례로 열어 무역할 수 있게 했어요."
+      ],
+      3,
+      "강화도 조약을 계기로 조선은 일본에 항구를 차례로 열었어요."
+    ],
+    [
+      "갑오개혁으로 노비 제도가 폐지되었다는 말은 어떤 뜻인가요?",
+      [
+        "나라에서 노비가 해야 하는 일을 새로 정했다는 뜻이에요.",
+        "사람을 법으로 노비 신분에 묶어 두는 제도가 사라졌다는 뜻이에요.",
+        "노비를 거느릴 수 있는 사람의 수를 늘렸다는 뜻이에요.",
+        "노비의 신분을 자녀에게 그대로 물려주게 했다는 뜻이에요."
+      ],
+      1,
+      "갑오개혁으로 법적으로 노비 신분을 두는 제도가 폐지됐어요."
+    ],
+    [
+      "고종 때 정부가 새 학교를 세우고 해외 유학을 지원한 까닭은 무엇인가요?",
+      [
+        "학생들이 새로운 지식과 기술을 배울 수 있게 하려고요.",
+        "외국에 나가는 학생에게 무역을 맡기려고요.",
+        "학생들이 옛 과거 시험만 준비하게 하려고요.",
+        "조선에서 가르치던 모든 과목을 없애려고요."
+      ],
+      0,
+      "정부는 학생들이 새 학교와 해외 유학을 통해 새로운 지식과 기술을 배우기를 바랐어요."
+    ]
+  ]
+];
+function chapterReview(index) {
+  const items = reviews[index];
+  const chapter = chapters[index];
+  let picks = [];
+  const key = 'joseon-history-review-' + (index + 1);
+  try { picks = JSON.parse(localStorage.getItem(key) || '[]') || []; } catch {}
+  app.innerHTML = `<div class="review-layout"><header class="review-cover">
+    <p>챕터 ${index + 1} · ${chapter.title}</p><h1 tabindex="-1">사회 배움 확인</h1>
+    <p>배운 내용을 떠올리며 알맞은 답을 골라 보세요.</p>
+    <div class="review-meter"><progress aria-label="푼 문제 수" value="0" max="${items.length}"></progress><span id="review-progress" role="status"></span></div>
+  </header>
+  ${items.map(([question, options], i) => `<section class="panel review-card" data-review="${i}" aria-labelledby="review-title-${i}">
+    <h2 id="review-title-${i}"><span class="review-number">${i+1}</span>${question}</h2>
+    <div class="quiz-options" style="--option-count:${options.length}">${options.map((option, j) => `<button type="button" aria-pressed="false" data-choice="${j}"><span>${['①','②','③','④'][j]}</span> ${option}</button>`).join('')}</div>
+    <p class="review-feedback" role="status"></p>
+  </section>`).join('')}
+  <div class="row"><a class="button" href="#lesson-${chapter.end}">마지막 장면 다시 보기</a><a class="button primary" href="#chapters">챕터 목록으로</a></div></div>`;
+  const showProgress = () => {
+    const answered = items.filter((_, i) => Number.isInteger(picks[i])).length;
+    app.querySelector('progress').value = answered;
+    app.querySelector('#review-progress').textContent = answered + ' / ' + items.length + '문항 풀었어요';
+  };
+  app.querySelectorAll('[data-review]').forEach((card, i) => {
+    const [, , correct, explanation] = items[i];
+    const buttons = [...card.querySelectorAll('button')];
+    const paint = () => {
+      const pick = picks[i];
+      buttons.forEach((button, j) => button.setAttribute('aria-pressed', j === pick));
+      if (!Number.isInteger(pick)) return;
+      const feedback = card.querySelector('.review-feedback');
+      feedback.textContent = pick === correct ? '맞았어요! ' + explanation : '다시 생각해 보고 다른 답을 골라 보세요.';
+      feedback.dataset.correct = String(pick === correct);
+    };
+    buttons.forEach((button, j) => button.onclick = () => {
+      picks[i] = j;
+      try { localStorage.setItem(key, JSON.stringify(picks)); } catch {}
+      paint();
+      showProgress();
+    });
+    paint();
+  });
+  showProgress();
+}
 function render() {
   const route = location.hash.slice(1);
   const match = /^lesson-(\d+)$/.exec(route);
-  if (match && Number(match[1]) >= 1 && Number(match[1]) <= lessons.length) lesson(Number(match[1])-1);
+  if (/^review-[12]$/.test(route)) chapterReview(Number(route.slice(-1))-1);
+  else if (match && Number(match[1]) >= 1 && Number(match[1]) <= lessons.length) lesson(Number(match[1])-1);
   else if (route==='timeline') app.innerHTML = `<section class="panel"><h1 tabindex="-1">시대 흐름</h1><ol class="timeline">${timeline.map(([year,event,desc,index])=>`<li><strong>${year}년 · ${event}</strong><p>${desc}</p>${index ? `<a href="#lesson-${index}">관련 장면 열기</a>` : ""}</li>`).join('')}</ol></section>`;
   else if (route==='teacher') app.innerHTML = `<section class="panel"><h1 tabindex="-1">교사용 영상 검토</h1><h2>챕터 제작 원칙</h2><ul><li><strong>보기 전</strong>에는 시대 배경과 어려운 낱말, 관찰할 단서를 안내합니다. 장면 소개나 관찰 안내에서 내용 확인의 정답을 먼저 밝히지 않습니다.</li><li><strong>보기 후</strong>에는 영상 속 말, 행동, 옷차림 등 학생이 직접 보고 들은 사실을 묻습니다. 해설에서는 답의 근거를 짚어 줍니다.</li><li>챕터는 이야기 속 시간 순서로 배열하고, 영상에는 공식 클립 번호를 표시합니다.</li></ul><p>공식 업로드와 회차를 확인한 영상입니다. 학생에게 공유하기 전에 실제 재생 환경에서 장면 전체 및 학교 기기 재생을 확인해 주세요.</p><ul>${lessons.map(l=>`<li><a href="${url(l.id)}" target="_blank" rel="noopener">${l.ep} · ${l.title}</a> — ${l.review?'교사 동반 권장 · '+l.review:'장면 전체와 재생 가능 여부 확인 필요'}</li>`).join('')}</ul></section>`;
   else app.innerHTML = `<section class="hero"><p class="stamp">초등 사회 · 자기주도 역사 탐구</p><h1 tabindex="-1">유진 초이,<br>그는 누구인가?</h1><p>1871년 조선, 한 소년의 이야기가 시작됩니다. 어린 유진을 따라 그날의 조선으로 들어가 볼까요?</p><p>영상을 보기 전에 그 시대를 먼저 만나 보세요. 배경을 알고 보면 인물의 말과 행동이 다르게 보입니다.</p><a class="button" href="#lesson-${(lessons.findIndex((_,i)=>!records[i]?.done)+1)||1}">학습 시작</a></section><section class="heading" id="chapters" tabindex="-1">${cards()}</section>`;
