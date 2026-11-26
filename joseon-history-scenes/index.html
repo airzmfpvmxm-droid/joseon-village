@@ -83,6 +83,7 @@ main{padding-block:clamp(1.1rem,3vw,2rem)}
 .review-number{background:#ead8b8;color:#653a27}
 footer{background:#efe7d6}
 @media(max-width:680px){.hero{grid-template-columns:1fr;padding:1.2rem}.hero-art{width:min(100%,26rem)}.hero-art img{height:12rem}.scene-cover h1{font-size:1.85rem}}
+.hero-art img,.review-art img{height:auto;aspect-ratio:16/9;object-fit:cover}
 </style>
 </head>
 <body>
@@ -859,16 +860,16 @@ const reviews = [
 ];
 const reviewArt = [
   [
-    "https://upload.wikimedia.org/wikipedia/commons/0/07/Picture_of_%27Seodang%27_painted_by_Hongdo_Kim%2C_arguably_the_most_prominent_folk_artist_during_the_Joseon_Dynasty_of_Korea.jpg",
-    "김홍도 〈서당〉 · 국립중앙박물관 소장",
-    "https://commons.wikimedia.org/wiki/File:Picture_of_%27Seodang%27_painted_by_Hongdo_Kim,_arguably_the_most_prominent_folk_artist_during_the_Joseon_Dynasty_of_Korea.jpg",
-    "서당에서 아이들이 훈장 앞에 둘러앉은 조선 후기 풍속화"
+    "https://i.ytimg.com/vi/4fFnzpJl0IE/hqdefault.jpg",
+    "유진 초이 · tvN DRAMA 공식 클립 EP1-1",
+    "https://www.youtube.com/watch?v=4fFnzpJl0IE",
+    "《미스터 션샤인》 유진 초이 공식 클립 이미지"
   ],
   [
-    "https://upload.wikimedia.org/wikipedia/commons/5/57/View_of_Downtown_Keij%C5%8D_from_Seoul_City_Wall_around_early_1900s.jpg",
-    "1900년대 초 서울 풍경 · 서울역사박물관 소장",
-    "https://commons.wikimedia.org/wiki/File:View_of_Downtown_Keij%C5%8D_from_Seoul_City_Wall_around_early_1900s.jpg",
-    "서울 성곽에서 바라본 낮은 지붕과 골목이 이어지는 옛 서울"
+    "https://i.ytimg.com/vi/6maOwJNA8qA/hqdefault.jpg",
+    "고애신 · tvN DRAMA 공식 클립 EP1-15",
+    "https://www.youtube.com/watch?v=6maOwJNA8qA",
+    "《미스터 션샤인》 고애신 공식 클립 이미지"
   ]
 ];
 function chapterReview(index) {
