@@ -14,14 +14,14 @@
 <script>const historySource = 'https://contents.history.go.kr/';
 const lessons = [
   {
-    name:'조선은 어떤 나라였을까?', topic:'신분제 · 신미양요', minutes:8,
+    name:'조선은 어떤 나라였을까?', topic:'신분제 · 유진의 귀환', minutes:8,
     title:'조선에서 태어난 소년은 왜 미국 군인이 되어 돌아왔을까?',
     scene:'조선에서 태어나 미국으로 건너간 유진 초이가 미국 군인이 되어 다시 조선으로 향합니다. 그에게 조선으로 돌아가는 일은 어떤 의미일까요?',
-    before:[['신분제','당시 조선에는 태어난 집안의 신분에 따라 할 수 있는 일과 대우가 달라지는 제도가 있었어요.'],['신미양요','1871년 미국 군대가 강화도를 공격하고 조선군이 맞서 싸운 사건이에요.'],['시간의 흐름','신미양요는 유진의 어린 시절 이야기의 배경이에요. 어른이 된 유진이 조선으로 향하는 것은 시간이 흐른 뒤예요.']],
+    before:[['신분제','당시 조선에는 태어난 집안의 신분에 따라 할 수 있는 일과 대우가 달라지는 제도가 있었어요.']],
     watch:'유진의 옷차림과 주변 사람들이 그를 대하는 모습을 살펴보세요. 어떤 신분으로 조선에 돌아오는지 보여 주는 단서를 찾아보세요.',
-    real:'1871년 강화도에서 조선군과 미국군이 싸운 신미양요는 실제 사건이에요.',
+    real:'조선에는 신분제가 있었어요. 신분에 따라 사회에서 받는 대우와 맡을 수 있는 일이 달랐어요.',
     drama:'유진 초이와 그가 조선을 떠나 다시 돌아오는 이야기는 드라마 속 설정이에요.',
-    source:historySource+'mobile/kc/view.do?levelId=kc_i303800',
+    source:historySource+'mobile/ta/view.do?levelId=ta_h51_0060_0030_0010',
     id:'4fFnzpJl0IE', ep:'EP1-1',
     quiz:'어른이 된 유진은 어떤 신분으로 돌아오나요?', options:['미국 군인','조선 관리','영국 상인'], correct:0,
     explain:'유진은 미국에서 살다가 미국 군인이 되어 조선으로 돌아와요.',
@@ -95,7 +95,7 @@ function update(index, patch) {
 }
 const url = id => 'https://www.youtube.com/watch?v=' + id;
 const timeline = [
-  ['1871','신미양요','미국군이 강화도를 공격하고 조선군이 맞섰어요.',1],
+  ['1871','신미양요','미국군이 강화도를 공격하고 조선군이 맞섰어요.'],
   ['1876','강화도 조약','일본의 압박 속에서 조선은 조약을 맺고 항구를 열었어요.',2],
   ['1897','대한제국 선포','고종이 대한제국을 선포하고 황제가 되었어요.',3],
   ['1905','을사늑약','일본이 조약을 강요해 대한제국의 외교권을 빼앗았어요.',4]
@@ -151,7 +151,7 @@ function render() {
   const route = location.hash.slice(1);
   const match = /^lesson-([1-5])$/.exec(route);
   if (match) lesson(Number(match[1])-1);
-  else if (route==='timeline') app.innerHTML = `<section class="panel"><h1 tabindex="-1">시대 흐름</h1><ol class="timeline">${timeline.map(([year,event,desc,index])=>`<li><strong>${year}년 · ${event}</strong><p>${desc}</p><a href="#lesson-${index}">관련 챕터 열기</a></li>`).join('')}</ol></section>`;
+  else if (route==='timeline') app.innerHTML = `<section class="panel"><h1 tabindex="-1">시대 흐름</h1><ol class="timeline">${timeline.map(([year,event,desc,index])=>`<li><strong>${year}년 · ${event}</strong><p>${desc}</p>${index ? `<a href="#lesson-${index}">관련 챕터 열기</a>` : ""}</li>`).join('')}</ol></section>`;
   else if (route==='teacher') app.innerHTML = `<section class="panel"><h1 tabindex="-1">교사용 영상 검토</h1><p>공식 업로드와 회차를 확인한 영상입니다. 학생에게 공유하기 전에 실제 재생 환경에서 장면 전체 및 학교 기기 재생을 확인해 주세요.</p><ul>${lessons.map(l=>`<li><a href="${url(l.id)}" target="_blank" rel="noopener">${l.ep} · ${l.title}</a> — ${l.review?'교사 동반 권장. 을사늑약 체결 자체는 읽을거리로 학습합니다.':'장면 전체와 재생 가능 여부 확인 필요'}</li>`).join('')}</ul></section>`;
   else app.innerHTML = `<section class="hero"><p class="stamp">초등 사회 · 자기주도 역사 탐구</p><h1 tabindex="-1">장면으로 읽는<br>조선의 마지막 시기</h1><p>영상을 보기 전에 그 시대를 먼저 만나 보세요. 배경을 알고 보면 인물의 말과 행동이 다르게 보입니다.</p><a class="button" href="#lesson-${Math.min(5,(lessons.findIndex((_,i)=>!records[i]?.done)+1)||1)}">학습 시작</a></section><section class="heading" id="chapters" tabindex="-1">${cards()}</section>`;
   const focus = route==='chapters'? document.querySelector('#chapters'):app.querySelector('h1');
