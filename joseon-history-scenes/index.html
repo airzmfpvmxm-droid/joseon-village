@@ -101,6 +101,12 @@ h1,h2,.book-copy strong,.hero h1{font-family:"Noto Serif KR",Batang,serif}
 @media(max-width:680px){.chapter-shelf{grid-template-columns:1fr}.quiz-item .quiz-options,.review-card .quiz-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style><style>
 .book-cover>img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.book-copy{gap:.35rem}.volume-1 .book-cover{background:#173d35;color:#fffdf7}.volume-1 .book-copy strong{color:#fffdf7}.cover-question{max-width:33ch;word-break:keep-all}.book-entry{justify-self:start;color:inherit;font-weight:700;padding:.45rem 0}.chapter-book details{margin:0;padding:0}.chapter-book .book-toggle{padding:.7rem 1.4rem;margin:0}.chapter-book details[open] .book-toggle:after{content:' ▴'}.scene-cover.heading{padding:.75rem 1rem}.scene-cover.heading h1{font-size:clamp(1.45rem,3vw,2rem)}.finish-actions{align-items:center}.finish-actions a{margin:0}
+</style><style>
+.heading.scene-cover{padding:.55rem 1rem;margin-bottom:.75rem}.scene-cover .scene-chapter{color:#24594c;font:600 .9rem/1.4 Pretendard,sans-serif}.scene-cover.heading h1{margin:.2rem 0}
+.scene-intro ul li+li{margin-top:.85rem}.observation{margin:0 0 .65rem;padding:.3rem .8rem;border-inline-start:3px solid #963e32;background:#fcf5ec}.observation strong{color:#87392f;font-size:.93rem}.observation p{margin:0;color:#26342f}
+@media(min-width:720px) and (orientation:landscape){.scene-intro{align-items:start}.scene-intro>figure{margin-top:0}}
+.quiz-item .quiz-options button{box-sizing:border-box;border:2px solid #d7d0c1;text-align:left}.quiz-item .quiz-options button[aria-pressed=true]{border-color:#173d35;box-shadow:inset 0 0 0 1px #173d35}
+.finish-actions #complete,.finish-actions.is-complete a{color:white;background:#173d35;border:2px solid #173d35}.finish-actions.is-complete #complete{color:#173d35;background:#e3efe5;border-color:#c0d4c6}.finish-actions a:after{content:' →'}
 </style></head>
 <body>
 <header><nav aria-label="주 메뉴"><a href="#home"><strong>장면으로 읽는 조선의 마지막 시기</strong></a><span><a href="#chapters">챕터 목록</a><a href="#timeline">시대 흐름</a></span></nav></header>
@@ -233,7 +239,7 @@ const lessons = [
     "topic": "어린 유진 · 낯선 땅",
     "minutes": 8,
     "scene": [
-      "바다를 건넌 유진 앞에 낯선 땅이 펼쳐집니다. 그곳에서는 누가 유진을 기다리고 있을까요?"
+      "바다를 건넌 어린 유진이 낯선 땅에 발을 디딥니다."
     ],
     "before": [
       [
@@ -241,7 +247,7 @@ const lessons = [
         "당시에는 먼 나라로 갈 때 배를 탔어요. 낯선 곳에 도착하면 말과 생활 방식이 다를 수 있었어요."
       ]
     ],
-    "watch": "유진이 낯선 사람을 만났을 때 어떤 표정과 태도를 보이는지 살펴봐요.",
+    "watch": "유진이 도착한 곳의 거리 모습을 살펴보세요.",
     "real": "19세기에는 대양을 건너 먼 나라를 오갈 때 배를 이용했어요.",
     "drama": "유진이 배를 타고 바다를 건너 낯선 곳에서 사람을 만난 이야기는 드라마 속 설정이에요.",
     "source": "https://tvn.cjenm.com/ko/mrsunshine/episodes/",
@@ -716,8 +722,12 @@ try {
   }
 } catch {}
 function update(index, patch) {
-  records[index] = {...records[index], ...patch};
-  try { localStorage.setItem(storageKey, JSON.stringify(records)); return true; } catch { return false; }
+  const next = {...records, [index]: {...records[index], ...patch}};
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(next));
+    records = next;
+    return true;
+  } catch { return false; }
 }
 const url = id => 'https://www.youtube.com/watch?v=' + id;
 const timeline = [
@@ -758,11 +768,11 @@ function lesson(index) {
   const ci = chapters.findIndex(chapter => index < chapter.end);
   const chapter = chapters[ci];
   const questions = [l, ...(l.extraQuiz || [])];
-  app.innerHTML = `<div class="heading scene-cover"><a class="scene-chapter" href="#chapters">${chapter.title}</a><p class="badge">챕터 ${ci+1} · 장면 ${index-chapter.start+1}/${chapter.end-chapter.start} · ${l.topic} · 약 ${l.minutes}분</p><h1 tabindex="-1">${l.name}</h1></div>
-  <div class="stack scene-layout"><div class="split scene-intro"><section class="panel" aria-labelledby="before"><h2 id="before">어떤 장면인가요?</h2><div class="narration">${l.scene.map(line=>`<p>${line}</p>`).join("")}</div><h3>보기 전 알아두기</h3><ul>${l.before.map(([key,value])=>`<li><strong>${key}</strong> · ${value}</li>`).join('')}</ul><h3 class="watch-label">이것을 찾아보세요</h3><p>${l.watch}</p></section>
+  app.innerHTML = `<div class="heading scene-cover"><a class="scene-chapter" href="#chapters">챕터 ${ci+1} · 장면 ${index-chapter.start+1}/${chapter.end-chapter.start}</a><h1 tabindex="-1">${l.name}</h1></div>
+  <div class="stack scene-layout"><div class="split scene-intro"><section class="panel" aria-labelledby="before"><h2 id="before">어떤 장면인가요?</h2><div class="narration">${l.scene.map(line=>`<p>${line}</p>`).join("")}</div><h3>보기 전 알아두기</h3><ul>${l.before.map(([key,value])=>`<li><strong>${key}</strong> · ${value}</li>`).join('')}</ul></section>
   <figure class="panel"><figcaption><p class="badge">tvN DRAMA · ${l.ep}</p></figcaption>
   ${l.review?`<p>영상에 다음 내용이 나와요. ${l.review}. 교사와 함께 확인하거나 읽을거리로 학습할 수 있어요.</p>`:""}
-  <div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a>
+  <aside class="observation"><strong>이것을 찾아보세요</strong><p>${l.watch}</p></aside><div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a>
   </figure></div>
   <section class="panel"><h2>내용 확인</h2><div class="${l.portrait ? 'quiz-with-portrait' : ''}"><div>${questions.map((q, qi)=>`<div class="quiz-item${q.image ? ' quiz-with-portrait' : ''}" data-quiz="${qi}" role="group" aria-labelledby="question-${qi}"><div><p id="question-${qi}">${questions.length > 1 ? (qi + 1) + '. ' : ''}${q.quiz}</p><div class="quiz-options" style="--option-count:${q.options.length}">${q.options.map((option,i)=>`<button type="button" aria-pressed="false" data-option="${i}">${option}</button>`).join('')}</div><p class="feedback" role="status"></p></div>${q.image ? `<figure class="character-card quiz-scene"><img src="${q.image.src}" alt="${q.image.alt}" width="626" height="470"><figcaption>추노꾼 · tvN 《미스터 션샤인》</figcaption></figure>` : ''}</div>`).join('')}</div>${l.portrait?`<figure class="character-card"><div class="character-image"><img src="${l.portrait.src}" alt="드라마에서 ${l.portrait.name}(으)로 등장하는 인물" loading="lazy"></div><figcaption><strong>${l.portrait.name}</strong><br><small>tvN DRAMA · ${l.ep} 공식 썸네일</small></figcaption></figure>`:''}</div></section>
   <section class="panel"><h2>실제 역사와 드라마</h2><div class="fact"><div><h3>실제 역사</h3><p>${l.real}</p><a href="${l.source}" target="_blank" rel="noopener">${l.sourceLabel || '역사 자료 읽기'}</a></div><div><h3>드라마 속 이야기</h3><p>${l.drama}</p></div></div></section>
@@ -785,7 +795,7 @@ function lesson(index) {
     const showChoice = choice => {
       options.forEach((button,i)=>button.setAttribute('aria-pressed',i===choice));
       group.querySelector('.feedback').dataset.correct = String(choice===q.correct);
-      group.querySelector('.feedback').textContent = (choice===q.correct?'맞았어요. ':'이렇게 알아두세요. ') + q.explain;
+      group.querySelector('.feedback').textContent = (choice===q.correct?'맞았어요. ':'다시 살펴봐요. ') + q.explain;
     };
     const saved = qi === 0 ? records[index]?.choice : records[index]?.extraChoices?.[qi];
     if (Number.isInteger(saved)) showChoice(saved);
@@ -799,11 +809,15 @@ function lesson(index) {
   const status = document.querySelector('#saved');
   const complete = document.querySelector('#complete');
   answer.value = records[index]?.answer || '';
-  if (records[index]?.done) complete.textContent = '학습 완료됨';
+  const showCompleted = () => {
+    complete.textContent = '✓ 학습 완료';
+    complete.closest('.finish-actions').classList.add('is-complete');
+  };
+  if (records[index]?.done) showCompleted();
   answer.oninput = () => { if (!update(index,{answer:answer.value})) status.textContent = '이 브라우저에서 저장을 사용할 수 없어요.'; };
   complete.onclick = () => {
     const saved = update(index,{answer:answer.value,done:true});
-    complete.textContent = '학습 완료됨';
+    if (saved) showCompleted();
     status.textContent = saved?'완료 표시와 내 생각을 이 브라우저에 저장했어요.':'이 브라우저에서 저장을 사용할 수 없어요.';
   };
 }
