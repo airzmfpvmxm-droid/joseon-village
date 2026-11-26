@@ -10,6 +10,21 @@
 .quiz-with-portrait{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,180px);gap:1.15rem;align-items:start}.character-card{border:1px solid var(--line);border-radius:.7rem;background:var(--paper);overflow:hidden}.character-card figcaption{padding:.5rem .7rem}.character-image{aspect-ratio:1;position:relative;overflow:hidden;background:var(--paper)}.character-image img{position:absolute;max-width:none;width:282.35%;height:auto;left:-176.47%;top:-34.12%}@media(max-width:560px){.quiz-with-portrait{grid-template-columns:1fr}.character-card{grid-row:1;width:min(165px,100%)}}
 .quiz-scene img{display:block;width:100%;height:auto}.quiz-scene figcaption{font-size:.875rem}
 .chapter-group{margin-top:2rem}.chapter-group h3{font-size:1.35rem}.chapter-group h4{font-size:1.1rem;margin:.3rem 0}.chapter-group .cards{margin-top:.7rem}
+.quiz-options {
+  display: grid;
+  grid-template-columns: repeat(var(--option-count), minmax(0, 1fr));
+  gap: .55rem;
+}
+.quiz-options button {
+  min-height: 44px;
+  padding: .65rem .55rem;
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .quiz-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 </style>
 </head>
 <body>
@@ -670,7 +685,7 @@ function lesson(index) {
   ${l.review?`<p>영상에 다음 내용이 나와요. ${l.review}. 교사와 함께 확인하거나 읽을거리로 학습할 수 있어요.</p>`:""}
   <div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a>
   </figure></div>
-  <section class="panel"><h2>내용 확인</h2><div class="${l.portrait ? 'quiz-with-portrait' : ''}"><div>${questions.map((q, qi)=>`<div class="quiz-item${q.image ? ' quiz-with-portrait' : ''}" data-quiz="${qi}" role="group" aria-labelledby="question-${qi}"><div><p id="question-${qi}">${questions.length > 1 ? (qi + 1) + '. ' : ''}${q.quiz}</p><div class="row">${q.options.map((option,i)=>`<button type="button" aria-pressed="false" data-option="${i}">${option}</button>`).join('')}</div><p class="feedback" role="status"></p></div>${q.image ? `<figure class="character-card quiz-scene"><img src="${q.image.src}" alt="${q.image.alt}" width="626" height="470"><figcaption>추노꾼 · tvN 《미스터 션샤인》</figcaption></figure>` : ''}</div>`).join('')}</div>${l.portrait?`<figure class="character-card"><div class="character-image"><img src="${l.portrait.src}" alt="드라마에서 ${l.portrait.name}(으)로 등장하는 인물" loading="lazy"></div><figcaption><strong>${l.portrait.name}</strong><br><small>tvN DRAMA · ${l.ep} 공식 썸네일</small></figcaption></figure>`:''}</div></section>
+  <section class="panel"><h2>내용 확인</h2><div class="${l.portrait ? 'quiz-with-portrait' : ''}"><div>${questions.map((q, qi)=>`<div class="quiz-item${q.image ? ' quiz-with-portrait' : ''}" data-quiz="${qi}" role="group" aria-labelledby="question-${qi}"><div><p id="question-${qi}">${questions.length > 1 ? (qi + 1) + '. ' : ''}${q.quiz}</p><div class="quiz-options" style="--option-count:${q.options.length}">${q.options.map((option,i)=>`<button type="button" aria-pressed="false" data-option="${i}">${option}</button>`).join('')}</div><p class="feedback" role="status"></p></div>${q.image ? `<figure class="character-card quiz-scene"><img src="${q.image.src}" alt="${q.image.alt}" width="626" height="470"><figcaption>추노꾼 · tvN 《미스터 션샤인》</figcaption></figure>` : ''}</div>`).join('')}</div>${l.portrait?`<figure class="character-card"><div class="character-image"><img src="${l.portrait.src}" alt="드라마에서 ${l.portrait.name}(으)로 등장하는 인물" loading="lazy"></div><figcaption><strong>${l.portrait.name}</strong><br><small>tvN DRAMA · ${l.ep} 공식 썸네일</small></figcaption></figure>`:''}</div></section>
   <section class="panel"><h2>실제 역사와 드라마</h2><div class="fact"><div><h3>실제 역사</h3><p>${l.real}</p><a href="${l.source}" target="_blank" rel="noopener">${l.sourceLabel || '역사 자료 읽기'}</a></div><div><h3>드라마 속 이야기</h3><p>${l.drama}</p></div></div></section>
   <section class="panel"><h2><label for="answer">내 생각 쓰기</label></h2><p id="prompt">${l.question}</p><details><summary>문장 시작 도움말</summary><p>“나는 ___ 장면을 보고, 이 인물이 ___하려 했다고 생각했다.” 또는 “나는 ___라고 생각한다. 그 까닭은 ___이다.”</p></details><textarea id="answer" aria-describedby="prompt" placeholder="장면이나 읽을거리에서 찾은 단서 하나를 넣어 써 보세요."></textarea><p id="saved" role="status"></p><button class="primary" id="complete">학습 완료</button></section>
   <div class="row"><a class="button" href="${index ? '#lesson-'+index : '#chapters'}">${index?'이전 장면':'챕터 목록'}</a><a class="button" href="${index+1<lessons.length?'#lesson-'+(index+2):'#chapters'}">${index+1<lessons.length?'다음 장면':'챕터 목록으로'}</a></div></div>`;
