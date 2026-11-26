@@ -216,7 +216,11 @@ const lessons = [
     "review": "포로에게 하는 거친 말",
     "source": "https://contents.history.go.kr/mobile/kc/view.do?levelId=kc_i303800",
     "ep": "EP1-6",
-    "minutes": 8
+    "minutes": 8,
+    "portrait": {
+      "src": "https://i.ytimg.com/vi/PNPEwruZCw4/hqdefault.jpg",
+      "name": "이완익"
+    }
   },
   {
     "name": "어른이 된 유진은 어떤 모습으로 돌아올까?",
@@ -295,7 +299,7 @@ function lesson(index) {
   <figure class="panel"><figcaption><p class="badge">tvN DRAMA · ${l.ep}</p><h2>${l.title}</h2></figcaption>
   ${l.review?`<p>영상에 다음 내용이 나와요. ${l.review}. 교사와 함께 확인하거나 읽을거리로 학습할 수 있어요.</p><details><summary>교사와 함께 영상 열기</summary><div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a></details>`:`<div id="video"></div><a href="${url(l.id)}" target="_blank" rel="noopener">YouTube에서 보기</a>`}
   </figure></div>
-  <section class="panel"><h2>내용 확인</h2><div class="${l.portrait ? 'quiz-with-portrait' : ''}"><div>${questions.map((q, qi)=>`<div class="quiz-item" data-quiz="${qi}" role="group" aria-labelledby="question-${qi}"><p id="question-${qi}">${questions.length > 1 ? (qi + 1) + '. ' : ''}${q.quiz}</p><div class="row">${q.options.map((option,i)=>`<button type="button" aria-pressed="false" data-option="${i}">${option}</button>`).join('')}</div><p class="feedback" role="status"></p></div>`).join('')}</div>${l.portrait?`<figure class="character-card"><div class="character-image"><img src="${l.portrait.src}" alt="드라마에서 흥선대원군으로 등장하는 인물" loading="lazy"></div><figcaption><strong>${l.portrait.name}</strong><br><small>tvN DRAMA · EP1-5 공식 썸네일</small></figcaption></figure>`:''}</div></section>
+  <section class="panel"><h2>내용 확인</h2><div class="${l.portrait ? 'quiz-with-portrait' : ''}"><div>${questions.map((q, qi)=>`<div class="quiz-item" data-quiz="${qi}" role="group" aria-labelledby="question-${qi}"><p id="question-${qi}">${questions.length > 1 ? (qi + 1) + '. ' : ''}${q.quiz}</p><div class="row">${q.options.map((option,i)=>`<button type="button" aria-pressed="false" data-option="${i}">${option}</button>`).join('')}</div><p class="feedback" role="status"></p></div>`).join('')}</div>${l.portrait?`<figure class="character-card"><div class="character-image"><img src="${l.portrait.src}" alt="드라마에서 ${l.portrait.name}(으)로 등장하는 인물" loading="lazy"></div><figcaption><strong>${l.portrait.name}</strong><br><small>tvN DRAMA · ${l.ep} 공식 썸네일</small></figcaption></figure>`:''}</div></section>
   <section class="panel"><h2>실제 역사와 드라마</h2><div class="fact"><div><h3>실제 역사</h3><p>${l.real}</p><a href="${l.source}" target="_blank" rel="noopener">역사 자료 읽기</a></div><div><h3>드라마 속 이야기</h3><p>${l.drama}</p></div></div></section>
   <section class="panel"><h2><label for="answer">내 생각 쓰기</label></h2><p id="prompt">${l.question}</p><details><summary>문장 시작 도움말</summary><p>“나는 ___ 장면을 보고, 이 인물이 ___하려 했다고 생각했다.” 또는 “나는 ___라고 생각한다. 그 까닭은 ___이다.”</p></details><textarea id="answer" aria-describedby="prompt" placeholder="장면이나 읽을거리에서 찾은 단서 하나를 넣어 써 보세요."></textarea><p id="saved" role="status"></p><button class="primary" id="complete">학습 완료</button></section>
   <div class="row"><a class="button" href="${index ? '#lesson-'+index : '#chapters'}">${index?'이전 챕터':'챕터 목록'}</a><a class="button" href="${index+1<lessons.length?'#lesson-'+(index+2):'#chapters'}">${index+1<lessons.length?'다음 챕터':'챕터 목록으로'}</a></div></div>`;
